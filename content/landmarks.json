@@ -1,8 +1,8 @@
 {
   "route": {
-    "name": "Everett -> Seattle",
+    "name": "Everett -> South Lake Union",
     "from": { "name": "Everett, WA", "lat": 47.9790, "lng": -122.2021 },
-    "to": { "name": "Downtown Seattle, WA", "lat": 47.6062, "lng": -122.3321 },
+    "to": { "name": "410 Terry Ave N, Seattle", "lat": 47.6235, "lng": -122.3340 },
     "expectedSpeedMph": 45,
     "direction": "southbound"
   },
@@ -86,18 +86,20 @@
     {
       "id": "space-needle",
       "name": "The Space Needle",
-      "lat": 47.6205,
-      "lng": -122.3320,
+      "lat": 47.6280,
+      "lng": -122.3405,
       "category": "history",
+      "leadMiles": 1.5,
       "script": "There she is - the Space Needle, off to your right. Built for the 1962 World's Fair, 605 feet tall, and for a brief shining moment the tallest thing west of the Mississippi. The whole theme of that fair was the future, which is exactly why the Needle looks like a flying saucer that parked itself on a tripod. And beyond it, that whole skyline stacking up into the sky - that's downtown Seattle. You are officially arriving in the big city."
     },
     {
       "id": "seattle-arrival",
-      "name": "Welcome to Seattle",
-      "lat": 47.6062,
-      "lng": -122.3321,
+      "name": "Your exit: Mercer Street",
+      "lat": 47.6235,
+      "lng": -122.3340,
       "category": "practical",
-      "script": "And - you made it. Welcome to Seattle. Pike Place Market and the waterfront are just down the hill to your right, the ferries are churning back and forth across Elliott Bay, and somewhere out there is more coffee than any single human settlement should reasonably be allowed to contain. That's the tour, Everett to Seattle. Same time on the way home? Drive safe out there, and go enjoy your day."
+      "leadMiles": 0.5,
+      "script": "Okay - this one's for you. Your exit is coming right up: Mercer Street. Take it, and get ready to hang a left at the signal. Welcome to South Lake Union - Amazon's backyard, a neighborhood that went from sleepy warehouses and biotech labs to the densest tech district in the whole city in about a decade flat. The Space Needle is still waving at you over to the west. Terry Avenue North is just ahead - number 410, and you're here. That's the tour, Everett to South Lake Union. Go get 'em - and hey, same time on the way home?"
     },
     {
       "id": "snohomish-river",

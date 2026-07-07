@@ -98,7 +98,9 @@ function projectLL(p) {
 // ---------- the engine ----------
 function tick() {
   updateUI();
-  if (paused || isPlaying) return;
+  // Off the planned route: hold narration (don't fire a story for a place you're not
+  // near); it auto-resumes at the right spot once you rejoin the route.
+  if (paused || isPlaying || offRoute) return;
   if (nextIndex < clips.length && clips[nextIndex].startAtMiles <= currentMiles + 1e-6) {
     playClip(nextIndex);
   }
