@@ -1,13 +1,13 @@
-# Roadbard — Offline AI Travel Narration
+# MileMuse — Offline AI Travel Narration
 
 **Design spec** · Date: 2026-07-06 · Status: Approved (brainstorm) → ready for implementation plan
-**Working name:** Roadbard (placeholder, renameable)
+**Name:** MileMuse · **Domain:** `milemuse.com` (verified available at design time, standard ~$12/yr)
 
 ---
 
 ## 1. Summary
 
-Roadbard is a road-trip companion that talks to you the whole drive — telling you about the
+MileMuse is a road-trip companion that talks to you the whole drive — telling you about the
 places you pass, in the voice of a witty, well-read friend in the passenger seat. It is built as
 **two pieces**:
 
