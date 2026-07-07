@@ -98,6 +98,70 @@
       "lng": -122.3321,
       "category": "practical",
       "script": "And - you made it. Welcome to Seattle. Pike Place Market and the waterfront are just down the hill to your right, the ferries are churning back and forth across Elliott Bay, and somewhere out there is more coffee than any single human settlement should reasonably be allowed to contain. That's the tour, Everett to Seattle. Same time on the way home? Drive safe out there, and go enjoy your day."
+    },
+    {
+      "id": "snohomish-river",
+      "name": "Snohomish River Delta",
+      "lat": 47.9600,
+      "lng": -122.1850,
+      "category": "nature",
+      "script": "Right about now you're crossing the Snohomish River, spilling out into this big flat delta of sloughs and marshland before it empties into Puget Sound. Look for wetlands on both sides - places like the Qwuloolt estuary, where a few years back they deliberately knocked down old farm dikes to let the tide flood back in and bring the salmon habitat roaring back to life. It's a proper working river: log booms, fishing boats, and a truly ridiculous number of birds. Give it a glance before the freeway climbs back up into the trees."
+    },
+    {
+      "id": "boeing-freeway",
+      "name": "The Boeing Freeway",
+      "lat": 47.9230,
+      "lng": -122.2230,
+      "category": "history",
+      "script": "See that big interchange peeling off to your right? That's State Route 526 - though absolutely everyone around here just calls it the Boeing Freeway, because it runs west, straight to the giant aircraft plant we're about to gawk at, and to Paine Field. And these days Paine Field is a real commercial airport, so you can actually catch a flight out of little Everett now. Keep your eyes to the right - the main event is coming right up."
+    },
+    {
+      "id": "mill-creek",
+      "name": "Silver Lake & Mill Creek",
+      "lat": 47.8700,
+      "lng": -122.2350,
+      "category": "quirky",
+      "script": "You're rolling through the big bedroom-suburb belt now - Silver Lake just off to your left, and Mill Creek a little beyond it. This is quintessential greater-Seattle: roundabouts, a 'town center' that is honestly a very nice strip mall, endless cul-de-sacs, and enough evergreens to make it genuinely pleasant. It is exactly the kind of place people move to for the good schools and then commute this precise stretch of I-5 every single morning. Not that anyone in this car would know anything about that."
+    },
+    {
+      "id": "mountlake-terrace",
+      "name": "Mountlake Terrace",
+      "lat": 47.7920,
+      "lng": -122.3140,
+      "category": "practical",
+      "script": "Mountlake Terrace, coming up - and it just joined the big leagues. That light rail line we mentioned back in Lynnwood stops right here too, which means this sleepy little in-between town suddenly has a one-seat train ride straight into downtown Seattle. It's the classic Puget Sound move: quiet post-war suburb, quietly reinventing itself as a transit hub. Blink and you're already sliding into Shoreline."
+    },
+    {
+      "id": "lake-city",
+      "name": "Jackson Park & Lake City",
+      "lat": 47.7170,
+      "lng": -122.3230,
+      "category": "nature",
+      "script": "Off to your left, all those trees are Jackson Park - a big old public golf course that pulls double duty as a chunk of much-needed green space on the north end. Just beyond it runs Lake City Way, one of Seattle's great scruffy-in-the-best-way old highways, lined with taco trucks, dive bars, and gloriously vintage motels. You are properly inside Seattle now; the street grid is closing in, and this freeway is about to get serious."
+    },
+    {
+      "id": "capitol-hill",
+      "name": "Capitol Hill & the City",
+      "lat": 47.6380,
+      "lng": -122.3250,
+      "category": "history",
+      "script": "Up the hill to your left, that's Capitol Hill - Seattle's loudest, most caffeinated, most tattooed neighborhood, absolutely wall-to-wall with music venues and coffee shops that take the whole thing very, very seriously. That big boxy structure sliding past is the convention center, and downtown is now pretty much dead ahead. Deep breath - you're basically there."
+    },
+    {
+      "id": "alderwood-405",
+      "name": "Alderwood & the 405 Split",
+      "lat": 47.8450,
+      "lng": -122.2650,
+      "category": "practical",
+      "script": "Alderwood is right around you now - the big regional mall, and the unofficial spot where the suburbs start blurring into greater Seattle. This is also where Interstate 405 peels off toward the Eastside: Bellevue, Redmond, Microsoft, all the tech campuses stacked up along the far side of Lake Washington. We are staying on I-5, though - straight down the spine, aimed right at the heart of the city."
+    },
+    {
+      "id": "shoreline-aurora",
+      "name": "Shoreline & Old Aurora",
+      "lat": 47.7350,
+      "lng": -122.3450,
+      "category": "quirky",
+      "script": "Off to your right, running parallel to us, is old Aurora Avenue - Highway 99 - Seattle's gloriously seedy original main drag: neon motel signs, classic diners, and a little bit of grit, from back before I-5 was ever built. You're passing through Shoreline, the very last suburb before this freeway stops messing around and dives straight into the city."
     }
   ]
 }
