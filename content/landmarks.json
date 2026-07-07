@@ -1,0 +1,103 @@
+{
+  "route": {
+    "name": "Everett -> Seattle",
+    "from": { "name": "Everett, WA", "lat": 47.9790, "lng": -122.2021 },
+    "to": { "name": "Downtown Seattle, WA", "lat": 47.6062, "lng": -122.3321 },
+    "expectedSpeedMph": 45,
+    "direction": "southbound"
+  },
+  "voice": "en-US-AndrewNeural",
+  "voiceFallback": "en-US-GuyNeural",
+  "defaultLeadMiles": 0.6,
+  "landmarks": [
+    {
+      "id": "everett-welcome",
+      "name": "Welcome to Everett",
+      "lat": 47.9790,
+      "lng": -122.2021,
+      "category": "history",
+      "leadMiles": 0,
+      "script": "Alright - Everett. Consider me your slightly over-caffeinated tour guide for the next half hour, Everett to Seattle. Quick orientation: Everett is the biggest city in Snohomish County, and that's a working Navy town down at the waterfront - Naval Station Everett homeports real warships right here on Puget Sound. It's also, unapologetically, an aerospace town - which you're about to see in the most ridiculous way possible in just a couple miles. So settle in, keep it around the speed limit, and let me do the talking. Southbound on I-5 - here we go."
+    },
+    {
+      "id": "boeing-everett",
+      "name": "Boeing Everett Factory",
+      "lat": 47.9074,
+      "lng": -122.2811,
+      "category": "history",
+      "script": "Okay, look off to your right - west, toward Paine Field. See that enormous building? That is the Boeing Everett Factory, and it is, no exaggeration, the largest building in the world by volume - something like 472 million cubic feet. It's so absurdly big that early on, before they sorted out the air circulation, clouds would actually start forming up near the ceiling. Indoor weather. This is where they built the jumbo jets - the 747, the 777, the 787 Dreamliner. Fun brag for the carpool: you just drove past a single roof with more airplanes under it than most countries own."
+    },
+    {
+      "id": "lynnwood-link",
+      "name": "Lynnwood & Light Rail",
+      "lat": 47.8209,
+      "lng": -122.2854,
+      "category": "practical",
+      "script": "Coming up: Lynnwood. Two things. One - Alderwood, the big mall, your classic Seattle-suburb retail cathedral. But two, the cooler one: as of 2024, Lynnwood finally got light rail. The Lynnwood Link extension means you can now hop a train straight into downtown Seattle - a genuinely big deal for a region that spent literally decades arguing about whether to build it. So if this traffic ever truly breaks your spirit, just know there's a train, right about here, quietly beating you to work."
+    },
+    {
+      "id": "edmonds-ferry",
+      "name": "Edmonds Ferry",
+      "lat": 47.8107,
+      "lng": -122.3820,
+      "category": "practical",
+      "script": "Off to your right, a few miles west, is Edmonds - and Edmonds has a ferry. The Edmonds to Kingston run carries you across Puget Sound to the Kitsap Peninsula in about half an hour, and honestly it's less commute and more scenic cruise that happens to move your car. Edmonds itself is one of those tidy, artsy little waterfront towns with a flower-basket-on-every-lamppost kind of energy. File it under weekend, not today."
+    },
+    {
+      "id": "king-county-line",
+      "name": "Into King County",
+      "lat": 47.7560,
+      "lng": -122.3250,
+      "category": "quirky",
+      "script": "Somewhere right around here you cross an invisible line - you're leaving Snohomish County and entering King County. Welcome to Seattle's home county. The town hugging the freeway right now is Shoreline, which is exactly what it sounds like: the shore of Lake Washington is just off to your left, to the east. From here on out, the city really starts reaching up to meet you."
+    },
+    {
+      "id": "northgate",
+      "name": "Northgate",
+      "lat": 47.7060,
+      "lng": -122.3250,
+      "category": "history",
+      "script": "Northgate - and here's a genuinely great piece of trivia. When Northgate Mall opened in 1950, it was one of the very first shopping malls in America. The design here basically helped invent the whole regional shopping mall concept that then went on to eat the entire country. The old mall's been redeveloped, there's a light-rail station now, and - this is the fun part - the Seattle Kraken, the NHL team, practice at the ice rink right here. Three sheets of ice where a shopping mall used to be. Very Seattle."
+    },
+    {
+      "id": "green-lake",
+      "name": "Green Lake",
+      "lat": 47.6800,
+      "lng": -122.3300,
+      "category": "nature",
+      "script": "Off to your right is the Green Lake neighborhood - and there really is a lake, a little glacial one, with a path looping all the way around it that on any sunny day is packed with joggers, strollers, paddleboarders, and at least one person on rollerblades who did not get the memo that it is no longer 1994. It's one of the most beloved parks in the whole city. Just a nice thing to know is there."
+    },
+    {
+      "id": "uw",
+      "name": "University of Washington",
+      "lat": 47.6570,
+      "lng": -122.3040,
+      "category": "history",
+      "script": "Now look to your left - east. That's the University of Washington. Founded in 1861, before Washington was even a state - so the school is older than the state it sits in, which is a great little flex. In spring, the cherry blossoms in the Quad go completely viral. And that big stadium near the water is Husky Stadium, right on the edge of Lake Washington - one of the only stadiums in the country where fans literally sail up in boats and tailgate from the water. Go Dawgs."
+    },
+    {
+      "id": "ship-canal",
+      "name": "Ship Canal Bridge & Lake Union",
+      "lat": 47.6480,
+      "lng": -122.3230,
+      "category": "nature",
+      "script": "Okay, this next part is my favorite. You're about to cross the Ship Canal Bridge - a double-decker deck carrying I-5 up over the Lake Washington Ship Canal. Glance to your right, west, at Lake Union: floating homes - actual houseboats that people live in, including the one from the movie Sleepless in Seattle - little seaplanes taking off right off the water, and Gas Works Park over on the far shore. And if the clouds cooperate - there it is. The Space Needle just walked onto the stage."
+    },
+    {
+      "id": "space-needle",
+      "name": "The Space Needle",
+      "lat": 47.6205,
+      "lng": -122.3320,
+      "category": "history",
+      "script": "There she is - the Space Needle, off to your right. Built for the 1962 World's Fair, 605 feet tall, and for a brief shining moment the tallest thing west of the Mississippi. The whole theme of that fair was the future, which is exactly why the Needle looks like a flying saucer that parked itself on a tripod. And beyond it, that whole skyline stacking up into the sky - that's downtown Seattle. You are officially arriving in the big city."
+    },
+    {
+      "id": "seattle-arrival",
+      "name": "Welcome to Seattle",
+      "lat": 47.6062,
+      "lng": -122.3321,
+      "category": "practical",
+      "script": "And - you made it. Welcome to Seattle. Pike Place Market and the waterfront are just down the hill to your right, the ferries are churning back and forth across Elliott Bay, and somewhere out there is more coffee than any single human settlement should reasonably be allowed to contain. That's the tour, Everett to Seattle. Same time on the way home? Drive safe out there, and go enjoy your day."
+    }
+  ]
+}

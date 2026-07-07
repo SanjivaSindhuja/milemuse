@@ -1,0 +1,7 @@
+{
+  "name": "milemuse",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MileMuse - offline-ish GPS travel narration. Everett->Seattle demo."
+}
