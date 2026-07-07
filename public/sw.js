@@ -1,6 +1,6 @@
 // MileMuse service worker - cache-first so a downloaded route plays with no signal.
 // Caches the app shell plus EVERY route's manifest, geometry, and audio.
-const CACHE = "milemuse-v3";
+const CACHE = "milemuse-v4";
 const CORE = [
   "./",
   "./index.html",
