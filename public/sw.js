@@ -1,15 +1,15 @@
 // MileMuse service worker - cache-first so a downloaded route plays with no signal.
-const CACHE = "milemuse-v1";
+// Caches the app shell plus EVERY route's manifest, geometry, and audio.
+const CACHE = "milemuse-v2";
 const CORE = [
   "./",
   "./index.html",
   "./app.js",
   "./styles.css",
   "./geo.js",
-  "./manifest.json",
-  "./route.json",
   "./app.webmanifest",
   "./icon.svg",
+  "./routes.json",
 ];
 
 self.addEventListener("install", (e) => {
@@ -17,10 +17,18 @@ self.addEventListener("install", (e) => {
     (async () => {
       const cache = await caches.open(CACHE);
       await cache.addAll(CORE).catch(() => {});
-      // Also pre-cache every audio clip listed in the manifest.
       try {
-        const m = await (await fetch("./manifest.json", { cache: "no-store" })).json();
-        await cache.addAll((m.clips || []).map((c) => "./" + c.audio)).catch(() => {});
+        const routes = await (await fetch("./routes.json", { cache: "no-store" })).json();
+        for (const r of routes) {
+          const base = "./" + r.dir;
+          const m = await (await fetch(base + "/manifest.json", { cache: "no-store" })).json();
+          const assets = [
+            base + "/manifest.json",
+            base + "/route.json",
+            ...(m.clips || []).map((c) => base + "/" + c.audio),
+          ];
+          await cache.addAll(assets).catch(() => {});
+        }
       } catch {}
       self.skipWaiting();
     })()

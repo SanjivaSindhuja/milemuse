@@ -1,0 +1,18 @@
+[
+  {
+    "id": "to-work",
+    "label": "To work",
+    "name": "Everett -> South Lake Union",
+    "dir": "routes/to-work",
+    "totalMiles": 27.23,
+    "stops": 19
+  },
+  {
+    "id": "to-home",
+    "label": "Home",
+    "name": "South Lake Union -> Everett",
+    "dir": "routes/to-home",
+    "totalMiles": 27.28,
+    "stops": 17
+  }
+]

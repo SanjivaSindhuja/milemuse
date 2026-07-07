@@ -8,6 +8,7 @@ const el = {
   routeName: $("route-name"), routeSub: $("route-sub"), routeMini: $("route-mini"),
   stopCount: $("stop-count"), routeMiles: $("route-miles"),
   btnStart: $("btn-start"), btnSim: $("btn-sim"), loadStatus: $("load-status"),
+  picker: $("route-picker"),
   milesNow: $("miles-now"), milesTotal: $("miles-total"), clipIdx: $("clip-idx"), clipTotal: $("clip-total"),
   progressFill: $("progress-fill"), offroute: $("offroute"),
   npCategory: $("np-category"), npSide: $("np-side"), npSideLabel: $("np-side-label"),
@@ -21,6 +22,7 @@ const el = {
 
 // ---- state ----
 let manifest, route, clips = [], polyline = [], cum = [], totalMiles = 0;
+let routes = [], routeBase = "";
 let current = -1, nextIndex = 0, isPlaying = false, paused = false;
 let currentMiles = 0, currentLL = null, offRoute = false, mode = "idle";
 let playbackRate = 1, wakeLock = null, watchId = null, simRaf = 0;
@@ -30,29 +32,56 @@ const setStatus = (t) => (el.loadStatus.textContent = t || "");
 const pretty = (s) => (s || "").replace(/->/g, "→");
 
 // ---------- load content ----------
-async function load() {
+async function loadRoutes() {
+  try {
+    routes = await fetch("./routes.json").then((r) => { if (!r.ok) throw new Error("routes"); return r.json(); });
+    renderPicker();
+    const hour = new Date().getHours();
+    const preferId = hour < 14 ? "to-work" : "to-home"; // morning -> work, afternoon/evening -> home
+    const def = routes.find((r) => r.id === preferId) || routes[0];
+    await selectRoute(def);
+  } catch (e) {
+    setStatus("Content is still baking - refresh in a moment.");
+    console.warn("[MileMuse] routes load failed:", e.message);
+  }
+}
+
+function renderPicker() {
+  if (routes.length < 2) { el.picker.classList.add("hidden"); return; }
+  el.picker.innerHTML = routes
+    .map((r) => `<button class="seg" data-id="${r.id}" role="tab">${r.label}</button>`)
+    .join("");
+  el.picker.querySelectorAll(".seg").forEach((b) =>
+    b.addEventListener("click", () => selectRoute(routes.find((x) => x.id === b.dataset.id)))
+  );
+}
+
+async function selectRoute(r) {
+  routeBase = "./" + r.dir;
+  el.btnStart.disabled = true; el.btnSim.disabled = true;
+  setStatus("Loading " + r.label + "…");
   try {
     const [mf, rt] = await Promise.all([
-      fetch("./manifest.json").then((r) => { if (!r.ok) throw new Error("manifest"); return r.json(); }),
-      fetch("./route.json").then((r) => { if (!r.ok) throw new Error("route"); return r.json(); }),
+      fetch(routeBase + "/manifest.json").then((x) => x.json()),
+      fetch(routeBase + "/route.json").then((x) => x.json()),
     ]);
     manifest = mf; route = rt; clips = mf.clips || [];
     polyline = rt.polyline || []; cum = cumulativeMiles(polyline);
     totalMiles = rt.totalMiles || cum[cum.length - 1] || 0;
-
-    el.routeName.textContent = pretty(mf.route?.name || "Your drive");
-    el.routeMini.textContent = pretty(mf.route?.name || "Your drive");
+    el.routeName.textContent = pretty(mf.route?.name || r.name);
+    el.routeMini.textContent = pretty(mf.route?.name || r.name);
     el.stopCount.textContent = clips.length;
     el.routeMiles.textContent = Math.round(totalMiles);
     el.milesTotal.textContent = totalMiles.toFixed(1);
     el.clipTotal.textContent = clips.length;
     buildMap();
+    el.picker.querySelectorAll(".seg").forEach((b) => b.classList.toggle("on", b.dataset.id === r.id));
     el.btnStart.disabled = false; el.btnSim.disabled = false;
-    setStatus(`Ready · ${clips.length} stories downloaded · works with no signal.`);
-    console.log(`[MileMuse] loaded ${clips.length} clips, ${totalMiles.toFixed(1)} mi`);
+    setStatus(`Ready · ${clips.length} stories · works with no signal.`);
+    console.log(`[MileMuse] route ${r.id}: ${clips.length} clips, ${totalMiles.toFixed(1)} mi`);
   } catch (e) {
-    setStatus("Content is still baking - refresh in a moment.");
-    console.warn("[MileMuse] load failed:", e.message);
+    setStatus("Couldn't load that route - refresh in a moment.");
+    console.warn("[MileMuse] selectRoute failed:", e.message);
   }
 }
 
@@ -109,7 +138,7 @@ function tick() {
 function playClip(i) {
   current = i; nextIndex = i + 1; isPlaying = true;
   const c = clips[i];
-  el.audio.src = "./" + c.audio;
+  el.audio.src = routeBase + "/" + c.audio;
   el.audio.playbackRate = playbackRate;
   const pr = el.audio.play();
   if (pr && pr.catch) pr.catch((err) => { console.warn("[MileMuse] play blocked:", err?.message); isPlaying = false; });
@@ -242,7 +271,8 @@ if ("serviceWorker" in navigator) {
 // debug hook for QA
 window.__mm = {
   goto: (frac) => { el.simScrub.value = String(frac * 100); el.simScrub.dispatchEvent(new Event("input")); },
-  state: () => ({ current, nextIndex, currentMiles, isPlaying, mode, clip: clips[current]?.id, side: clips[current]?.side }),
+  pick: (id) => selectRoute(routes.find((r) => r.id === id)),
+  state: () => ({ route: routeBase, current, nextIndex, currentMiles, isPlaying, mode, clip: clips[current]?.id, side: clips[current]?.side }),
 };
 
-load();
+loadRoutes();

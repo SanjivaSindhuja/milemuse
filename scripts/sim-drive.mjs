@@ -7,7 +7,8 @@ import { dirname, join } from "node:path";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PUB = join(HERE, "..", "public");
-const manifest = JSON.parse(readFileSync(join(PUB, "manifest.json"), "utf8"));
+const ROUTE_ID = process.argv[2] || "to-work";
+const manifest = JSON.parse(readFileSync(join(PUB, "routes", ROUTE_ID, "manifest.json"), "utf8"));
 const clips = manifest.clips;
 const mph = manifest.route.expectedSpeedMph;
 const total = manifest.route.totalMiles;
