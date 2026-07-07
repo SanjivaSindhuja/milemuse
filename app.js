@@ -26,7 +26,9 @@ let routes = [], routeBase = "";
 let current = -1, nextIndex = 0, isPlaying = false, paused = false;
 let currentMiles = 0, currentLL = null, offRoute = false, mode = "idle";
 let playbackRate = 1, wakeLock = null, watchId = null, simRaf = 0;
+let offRoutePaused = false;
 let bbox = null;
+const OFFROUTE_MILES = 0.4; // generous vs ~10-50m GPS error; only a real detour trips it
 
 const setStatus = (t) => (el.loadStatus.textContent = t || "");
 const pretty = (s) => (s || "").replace(/->/g, "→");
@@ -177,6 +179,19 @@ function updateUI() {
   el.offroute.classList.toggle("hidden", !offRoute);
 }
 
+// Off-route means "hold narration": actually pause the current clip (not just
+// block new ones), and resume it when we rejoin the route. Edge-triggered.
+function applyOffRoute(next) {
+  if (next === offRoute) return;
+  offRoute = next;
+  if (next) {
+    if (!paused && !el.audio.paused) { el.audio.pause(); offRoutePaused = true; setPlayIcon(false); }
+  } else {
+    if (offRoutePaused && !paused) { el.audio.play().catch(() => {}); setPlayIcon(true); }
+    offRoutePaused = false;
+  }
+}
+
 function setMiles(m, ll) { currentMiles = m; currentLL = ll || pointAtMiles(m); tick(); }
 
 // ---------- modes ----------
@@ -186,7 +201,7 @@ function startDrive(m) {
   el.drive.classList.remove("hidden");
   requestWakeLock();
   current = -1; nextIndex = 0; isPlaying = false; paused = false; playbackRate = 1;
-  currentMiles = 0; currentLL = polyline[0]; offRoute = false;
+  currentMiles = 0; currentLL = polyline[0]; offRoute = false; offRoutePaused = false;
   setPlayIcon(true);
   tick(); // gesture-driven: plays clip #1 (unlocks audio on iOS)
   if (m === "gps") { el.simPanel.classList.add("hidden"); startGps(); }
@@ -199,7 +214,7 @@ function startGps() {
     (pos) => {
       const p = { lat: pos.coords.latitude, lng: pos.coords.longitude };
       const s = snapToRoute(polyline, cum, p);
-      offRoute = s.offsetMiles > 0.25;
+      applyOffRoute(s.offsetMiles > OFFROUTE_MILES);
       setMiles(s.atMiles, s.snapped);
     },
     (err) => console.warn("[MileMuse] GPS:", err.message),
@@ -246,7 +261,7 @@ el.simScrub.addEventListener("input", (e) => {
   setMiles(m);
 });
 el.btnPlayPause.addEventListener("click", () => {
-  if (el.audio.paused) { el.audio.play().catch(() => {}); paused = false; setPlayIcon(true); tick(); }
+  if (el.audio.paused) { el.audio.play().catch(() => {}); paused = false; offRoutePaused = false; setPlayIcon(true); tick(); }
   else { el.audio.pause(); paused = true; cancelSim(); setPlayIcon(false); }
 });
 el.btnReplay.addEventListener("click", () => { if (current >= 0) { el.audio.currentTime = 0; el.audio.play().catch(() => {}); } });
