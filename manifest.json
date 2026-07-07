@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-07T06:37:43.508Z",
+  "generatedAt": "2026-07-07T06:52:24.239Z",
   "voice": "en-US-AndrewNeural",
   "route": {
     "name": "Everett -> Seattle",
@@ -32,9 +32,35 @@
       "transcript": "Alright - Everett. Consider me your slightly over-caffeinated tour guide for the next half hour, Everett to Seattle. Quick orientation: Everett is the biggest city in Snohomish County, and that's a working Navy town down at the waterfront - Naval Station Everett homeports real warships right here on Puget Sound. It's also, unapologetically, an aerospace town - which you're about to see in the most ridiculous way possible in just a couple miles. So settle in, keep it around the speed limit, and let me do the talking. Southbound on I-5 - here we go."
     },
     {
+      "id": "snohomish-river",
+      "title": "Snohomish River Delta",
+      "audio": "audio/02.mp3",
+      "durationSec": 31.9,
+      "atMiles": 1.38,
+      "startAtMiles": 0.78,
+      "side": "left",
+      "category": "nature",
+      "lat": 47.96,
+      "lng": -122.185,
+      "transcript": "Right about now you're crossing the Snohomish River, spilling out into this big flat delta of sloughs and marshland before it empties into Puget Sound. Look for wetlands on both sides - places like the Qwuloolt estuary, where a few years back they deliberately knocked down old farm dikes to let the tide flood back in and bring the salmon habitat roaring back to life. It's a proper working river: log booms, fishing boats, and a truly ridiculous number of birds. Give it a glance before the freeway climbs back up into the trees."
+    },
+    {
+      "id": "boeing-freeway",
+      "title": "The Boeing Freeway",
+      "audio": "audio/03.mp3",
+      "durationSec": 24.2,
+      "atMiles": 4.3,
+      "startAtMiles": 3.7,
+      "side": "right",
+      "category": "history",
+      "lat": 47.923,
+      "lng": -122.223,
+      "transcript": "See that big interchange peeling off to your right? That's State Route 526 - though absolutely everyone around here just calls it the Boeing Freeway, because it runs west, straight to the giant aircraft plant we're about to gawk at, and to Paine Field. And these days Paine Field is a real commercial airport, so you can actually catch a flight out of little Everett now. Keep your eyes to the right - the main event is coming right up."
+    },
+    {
       "id": "boeing-everett",
       "title": "Boeing Everett Factory",
-      "audio": "audio/02.mp3",
+      "audio": "audio/04.mp3",
       "durationSec": 40.1,
       "atMiles": 7.37,
       "startAtMiles": 6.77,
@@ -45,9 +71,35 @@
       "transcript": "Okay, look off to your right - west, toward Paine Field. See that enormous building? That is the Boeing Everett Factory, and it is, no exaggeration, the largest building in the world by volume - something like 472 million cubic feet. It's so absurdly big that early on, before they sorted out the air circulation, clouds would actually start forming up near the ceiling. Indoor weather. This is where they built the jumbo jets - the 747, the 777, the 787 Dreamliner. Fun brag for the carpool: you just drove past a single roof with more airplanes under it than most countries own."
     },
     {
+      "id": "mill-creek",
+      "title": "Silver Lake & Mill Creek",
+      "audio": "audio/05.mp3",
+      "durationSec": 28.7,
+      "atMiles": 8.18,
+      "startAtMiles": 7.58,
+      "side": "left",
+      "category": "quirky",
+      "lat": 47.87,
+      "lng": -122.235,
+      "transcript": "You're rolling through the big bedroom-suburb belt now - Silver Lake just off to your left, and Mill Creek a little beyond it. This is quintessential greater-Seattle: roundabouts, a 'town center' that is honestly a very nice strip mall, endless cul-de-sacs, and enough evergreens to make it genuinely pleasant. It is exactly the kind of place people move to for the good schools and then commute this precise stretch of I-5 every single morning. Not that anyone in this car would know anything about that."
+    },
+    {
+      "id": "alderwood-405",
+      "title": "Alderwood & the 405 Split",
+      "audio": "audio/06.mp3",
+      "durationSec": 24.6,
+      "atMiles": 10.19,
+      "startAtMiles": 9.59,
+      "side": "right",
+      "category": "practical",
+      "lat": 47.845,
+      "lng": -122.265,
+      "transcript": "Alderwood is right around you now - the big regional mall, and the unofficial spot where the suburbs start blurring into greater Seattle. This is also where Interstate 405 peels off toward the Eastside: Bellevue, Redmond, Microsoft, all the tech campuses stacked up along the far side of Lake Washington. We are staying on I-5, though - straight down the spine, aimed right at the heart of the city."
+    },
+    {
       "id": "lynnwood-link",
       "title": "Lynnwood & Light Rail",
-      "audio": "audio/03.mp3",
+      "audio": "audio/07.mp3",
       "durationSec": 31.6,
       "atMiles": 12.36,
       "startAtMiles": 11.76,
@@ -60,7 +112,7 @@
     {
       "id": "edmonds-ferry",
       "title": "Edmonds Ferry",
-      "audio": "audio/04.mp3",
+      "audio": "audio/08.mp3",
       "durationSec": 25.4,
       "atMiles": 14.35,
       "startAtMiles": 13.75,
@@ -71,9 +123,22 @@
       "transcript": "Off to your right, a few miles west, is Edmonds - and Edmonds has a ferry. The Edmonds to Kingston run carries you across Puget Sound to the Kitsap Peninsula in about half an hour, and honestly it's less commute and more scenic cruise that happens to move your car. Edmonds itself is one of those tidy, artsy little waterfront towns with a flower-basket-on-every-lamppost kind of energy. File it under weekend, not today."
     },
     {
+      "id": "mountlake-terrace",
+      "title": "Mountlake Terrace",
+      "audio": "audio/09.mp3",
+      "durationSec": 24,
+      "atMiles": 14.91,
+      "startAtMiles": 14.31,
+      "side": "left",
+      "category": "practical",
+      "lat": 47.792,
+      "lng": -122.314,
+      "transcript": "Mountlake Terrace, coming up - and it just joined the big leagues. That light rail line we mentioned back in Lynnwood stops right here too, which means this sleepy little in-between town suddenly has a one-seat train ride straight into downtown Seattle. It's the classic Puget Sound move: quiet post-war suburb, quietly reinventing itself as a transit hub. Blink and you're already sliding into Shoreline."
+    },
+    {
       "id": "king-county-line",
       "title": "Into King County",
-      "audio": "audio/05.mp3",
+      "audio": "audio/10.mp3",
       "durationSec": 21.2,
       "atMiles": 17.4,
       "startAtMiles": 16.8,
@@ -84,9 +149,35 @@
       "transcript": "Somewhere right around here you cross an invisible line - you're leaving Snohomish County and entering King County. Welcome to Seattle's home county. The town hugging the freeway right now is Shoreline, which is exactly what it sounds like: the shore of Lake Washington is just off to your left, to the east. From here on out, the city really starts reaching up to meet you."
     },
     {
+      "id": "shoreline-aurora",
+      "title": "Shoreline & Old Aurora",
+      "audio": "audio/11.mp3",
+      "durationSec": 23.4,
+      "atMiles": 18.68,
+      "startAtMiles": 18.08,
+      "side": "right",
+      "category": "quirky",
+      "lat": 47.735,
+      "lng": -122.345,
+      "transcript": "Off to your right, running parallel to us, is old Aurora Avenue - Highway 99 - Seattle's gloriously seedy original main drag: neon motel signs, classic diners, and a little bit of grit, from back before I-5 was ever built. You're passing through Shoreline, the very last suburb before this freeway stops messing around and dives straight into the city."
+    },
+    {
+      "id": "lake-city",
+      "title": "Jackson Park & Lake City",
+      "audio": "audio/12.mp3",
+      "durationSec": 27,
+      "atMiles": 20.26,
+      "startAtMiles": 19.66,
+      "side": "left",
+      "category": "nature",
+      "lat": 47.717,
+      "lng": -122.323,
+      "transcript": "Off to your left, all those trees are Jackson Park - a big old public golf course that pulls double duty as a chunk of much-needed green space on the north end. Just beyond it runs Lake City Way, one of Seattle's great scruffy-in-the-best-way old highways, lined with taco trucks, dive bars, and gloriously vintage motels. You are properly inside Seattle now; the street grid is closing in, and this freeway is about to get serious."
+    },
+    {
       "id": "northgate",
       "title": "Northgate",
-      "audio": "audio/06.mp3",
+      "audio": "audio/13.mp3",
       "durationSec": 30.1,
       "atMiles": 21.1,
       "startAtMiles": 20.5,
@@ -99,7 +190,7 @@
     {
       "id": "green-lake",
       "title": "Green Lake",
-      "audio": "audio/07.mp3",
+      "audio": "audio/14.mp3",
       "durationSec": 22.3,
       "atMiles": 22.99,
       "startAtMiles": 22.39,
@@ -112,7 +203,7 @@
     {
       "id": "uw",
       "title": "University of Washington",
-      "audio": "audio/08.mp3",
+      "audio": "audio/15.mp3",
       "durationSec": 29.6,
       "atMiles": 24.63,
       "startAtMiles": 24.03,
@@ -125,7 +216,7 @@
     {
       "id": "ship-canal",
       "title": "Ship Canal Bridge & Lake Union",
-      "audio": "audio/09.mp3",
+      "audio": "audio/16.mp3",
       "durationSec": 29.6,
       "atMiles": 25.22,
       "startAtMiles": 24.62,
@@ -136,9 +227,22 @@
       "transcript": "Okay, this next part is my favorite. You're about to cross the Ship Canal Bridge - a double-decker deck carrying I-5 up over the Lake Washington Ship Canal. Glance to your right, west, at Lake Union: floating homes - actual houseboats that people live in, including the one from the movie Sleepless in Seattle - little seaplanes taking off right off the water, and Gas Works Park over on the far shore. And if the clouds cooperate - there it is. The Space Needle just walked onto the stage."
     },
     {
+      "id": "capitol-hill",
+      "title": "Capitol Hill & the City",
+      "audio": "audio/17.mp3",
+      "durationSec": 22.4,
+      "atMiles": 25.92,
+      "startAtMiles": 25.32,
+      "side": "right",
+      "category": "history",
+      "lat": 47.638,
+      "lng": -122.325,
+      "transcript": "Up the hill to your left, that's Capitol Hill - Seattle's loudest, most caffeinated, most tattooed neighborhood, absolutely wall-to-wall with music venues and coffee shops that take the whole thing very, very seriously. That big boxy structure sliding past is the convention center, and downtown is now pretty much dead ahead. Deep breath - you're basically there."
+    },
+    {
       "id": "space-needle",
       "title": "The Space Needle",
-      "audio": "audio/10.mp3",
+      "audio": "audio/18.mp3",
       "durationSec": 27.1,
       "atMiles": 27.18,
       "startAtMiles": 26.58,
@@ -151,7 +255,7 @@
     {
       "id": "seattle-arrival",
       "title": "Welcome to Seattle",
-      "audio": "audio/11.mp3",
+      "audio": "audio/19.mp3",
       "durationSec": 21.7,
       "atMiles": 28.31,
       "startAtMiles": 27.71,
