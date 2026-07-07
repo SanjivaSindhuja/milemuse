@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-07T06:52:24.239Z",
+  "generatedAt": "2026-07-07T06:57:34.345Z",
   "voice": "en-US-AndrewNeural",
   "route": {
     "name": "Everett -> Seattle",
@@ -231,12 +231,12 @@
       "title": "Capitol Hill & the City",
       "audio": "audio/17.mp3",
       "durationSec": 22.4,
-      "atMiles": 25.92,
-      "startAtMiles": 25.32,
-      "side": "right",
+      "atMiles": 25.91,
+      "startAtMiles": 25.31,
+      "side": "left",
       "category": "history",
       "lat": 47.638,
-      "lng": -122.325,
+      "lng": -122.317,
       "transcript": "Up the hill to your left, that's Capitol Hill - Seattle's loudest, most caffeinated, most tattooed neighborhood, absolutely wall-to-wall with music venues and coffee shops that take the whole thing very, very seriously. That big boxy structure sliding past is the convention center, and downtown is now pretty much dead ahead. Deep breath - you're basically there."
     },
     {
