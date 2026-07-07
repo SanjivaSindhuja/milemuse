@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MileMuse</title>
+  <meta name="description" content="A witty local guide that narrates your road trip by GPS." />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MileMuse" />
+  <link rel="manifest" href="./app.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main id="app">
+    <!-- ===================== START SCREEN ===================== -->
+    <section id="start" class="screen" aria-label="Start">
+      <div class="brand"><img src="./icon.svg" alt="" width="34" height="34" /> MileMuse</div>
+      <h1 id="route-name">Loading route…</h1>
+      <p id="route-sub" class="muted">
+        <span id="stop-count">–</span> stories · <span id="route-miles">–</span> mi ·
+        witty local guide
+      </p>
+
+      <div class="cta">
+        <button id="btn-start" class="btn primary" disabled aria-label="Start the drive with GPS">
+          <span class="ico">▶</span> Start drive (GPS)
+        </button>
+        <button id="btn-sim" class="btn ghost" disabled aria-label="Simulate the drive to test it">
+          Simulate the drive · test it
+        </button>
+      </div>
+
+      <ul class="hints" aria-label="Tips">
+        <li>Mount the phone and keep the screen on.</li>
+        <li>Turn your volume up — it talks as you pass each place.</li>
+        <li>Everything is pre-downloaded, so it keeps playing with no signal.</li>
+      </ul>
+      <p id="load-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- ===================== DRIVE SCREEN ===================== -->
+    <section id="drive" class="screen hidden" aria-label="Now driving">
+      <header class="topbar">
+        <button id="btn-back" class="linkbtn" aria-label="Back to start">‹ End</button>
+        <div class="route-mini" id="route-mini">Everett → Seattle</div>
+        <div id="offroute" class="badge hidden" role="status">Off route</div>
+      </header>
+
+      <svg id="map" viewBox="0 0 100 46" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <path id="map-route" d="" />
+        <circle id="map-dot" r="1.8" cx="0" cy="0" />
+      </svg>
+
+      <div class="progresswrap">
+        <div class="progressbar"><div id="progress-fill"></div></div>
+        <div class="progress-meta">
+          <span><b id="miles-now">0.0</b> / <span id="miles-total">–</span> mi</span>
+          <span>story <b id="clip-idx">0</b> / <span id="clip-total">–</span></span>
+        </div>
+      </div>
+
+      <div class="nowcard" id="nowcard">
+        <div class="nowcard-head">
+          <span class="chip" id="np-category" data-cat="">—</span>
+          <span class="side" id="np-side" aria-live="polite">
+            <span class="arrow" id="arrow-left" aria-hidden="true">◀</span>
+            <span id="np-side-label">get ready</span>
+            <span class="arrow" id="arrow-right" aria-hidden="true">▶</span>
+          </span>
+        </div>
+        <h2 id="np-title">Waiting for the road…</h2>
+        <p id="np-transcript" class="transcript"></p>
+      </div>
+
+      <div class="controls" role="group" aria-label="Playback">
+        <button id="btn-replay" class="ctl" aria-label="Replay this story">↺</button>
+        <button id="btn-playpause" class="ctl big" aria-label="Pause">⏸</button>
+        <button id="btn-skip" class="ctl" aria-label="Skip to next story">⏭</button>
+      </div>
+
+      <div class="upcoming">
+        <h3>Coming up</h3>
+        <ul id="upcoming-list"></ul>
+      </div>
+
+      <!-- Simulate controls (shown only in simulate mode) -->
+      <div id="sim-panel" class="sim hidden" aria-label="Simulator">
+        <div class="sim-title">SIMULATOR · faking GPS</div>
+        <div class="sim-row">
+          <button id="sim-realistic" class="btn small">▶ Real-time · ~40 min</button>
+          <button id="sim-fast" class="btn small">⏩ Fast preview · ~2 min</button>
+          <button id="sim-pause" class="btn small ghost">Pause</button>
+        </div>
+        <input id="sim-scrub" type="range" min="0" max="100" value="0" step="0.05" aria-label="Scrub along the route" />
+      </div>
+    </section>
+
+    <audio id="player" preload="auto"></audio>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
