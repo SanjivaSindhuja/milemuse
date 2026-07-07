@@ -26,9 +26,12 @@ let routes = [], routeBase = "";
 let current = -1, nextIndex = 0, isPlaying = false, paused = false;
 let currentMiles = 0, currentLL = null, offRoute = false, mode = "idle";
 let playbackRate = 1, wakeLock = null, watchId = null, simRaf = 0;
-let offRoutePaused = false;
+let offRoutePaused = false, audioUnlocked = false, firstFix = false;
 let bbox = null;
 const OFFROUTE_MILES = 0.4; // generous vs ~10-50m GPS error; only a real detour trips it
+// Tiny silent MP3 (data URI) played inside the Start tap to unlock iOS audio,
+// so the first real clip can start later (after the GPS fix) without being blocked.
+const SILENT_MP3 = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYyLjEyLjEwMQAAAAAAAAAAAAAA//sQxAADwAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xLEKYPAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xDEU4PAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7EsR9A8AAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7EMSnA8AAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
 
 const setStatus = (t) => (el.loadStatus.textContent = t || "");
 const pretty = (s) => (s || "").replace(/->/g, "→");
@@ -195,6 +198,14 @@ function applyOffRoute(next) {
 function setMiles(m, ll) { currentMiles = m; currentLL = ll || pointAtMiles(m); tick(); }
 
 // ---------- modes ----------
+function unlockAudio() {
+  try {
+    el.audio.src = SILENT_MP3;
+    const p = el.audio.play();
+    if (p && p.then) p.then(() => { el.audio.pause(); el.audio.currentTime = 0; audioUnlocked = true; }).catch(() => {});
+  } catch {}
+}
+
 function startDrive(m) {
   mode = m;
   el.start.classList.add("hidden");
@@ -203,9 +214,16 @@ function startDrive(m) {
   current = -1; nextIndex = 0; isPlaying = false; paused = false; playbackRate = 1;
   currentMiles = 0; currentLL = polyline[0]; offRoute = false; offRoutePaused = false;
   setPlayIcon(true);
-  tick(); // gesture-driven: plays clip #1 (unlocks audio on iOS)
-  if (m === "gps") { el.simPanel.classList.add("hidden"); startGps(); }
-  else { el.simPanel.classList.remove("hidden"); }
+  unlockAudio(); // unlock iOS audio within the tap (silent), independent of the first clip
+  if (m === "gps") {
+    el.simPanel.classList.add("hidden");
+    el.npTitle.textContent = "Finding your location…";
+    firstFix = true; // narration begins from your ACTUAL position (see startGps)
+    startGps();
+  } else {
+    el.simPanel.classList.remove("hidden");
+    tick(); // simulate: run the whole route from the start
+  }
 }
 
 function startGps() {
@@ -214,7 +232,21 @@ function startGps() {
     (pos) => {
       const p = { lat: pos.coords.latitude, lng: pos.coords.longitude };
       const s = snapToRoute(polyline, cum, p);
-      applyOffRoute(s.offsetMiles > OFFROUTE_MILES);
+      const onRoute = s.offsetMiles <= OFFROUTE_MILES;
+      if (firstFix && onRoute) {
+        firstFix = false;
+        // Start from your ACTUAL location: play the nearest stop right away for orientation,
+        // then continue forward from there (never replays the whole route from Everett).
+        let best = 0, bestD = Infinity;
+        for (let i = 0; i < clips.length; i++) {
+          const d = Math.abs(clips[i].startAtMiles - s.atMiles);
+          if (d < bestD) { bestD = d; best = i; }
+        }
+        console.log(`[MileMuse] GPS start @ ${s.atMiles.toFixed(1)}mi -> nearest story #${best + 1} (${clips[best].id})`);
+        currentMiles = s.atMiles; currentLL = s.snapped;
+        playClip(best);
+      }
+      applyOffRoute(!onRoute);
       setMiles(s.atMiles, s.snapped);
     },
     (err) => console.warn("[MileMuse] GPS:", err.message),
