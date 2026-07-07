@@ -27,6 +27,7 @@ let playbackRate = 1, wakeLock = null, watchId = null, simRaf = 0;
 let bbox = null;
 
 const setStatus = (t) => (el.loadStatus.textContent = t || "");
+const pretty = (s) => (s || "").replace(/->/g, "→");
 
 // ---------- load content ----------
 async function load() {
@@ -39,8 +40,8 @@ async function load() {
     polyline = rt.polyline || []; cum = cumulativeMiles(polyline);
     totalMiles = rt.totalMiles || cum[cum.length - 1] || 0;
 
-    el.routeName.textContent = mf.route?.name || "Your drive";
-    el.routeMini.textContent = mf.route?.name || "Your drive";
+    el.routeName.textContent = pretty(mf.route?.name || "Your drive");
+    el.routeMini.textContent = pretty(mf.route?.name || "Your drive");
     el.stopCount.textContent = clips.length;
     el.routeMiles.textContent = Math.round(totalMiles);
     el.milesTotal.textContent = totalMiles.toFixed(1);
@@ -111,6 +112,7 @@ function playClip(i) {
   const pr = el.audio.play();
   if (pr && pr.catch) pr.catch((err) => { console.warn("[MileMuse] play blocked:", err?.message); isPlaying = false; });
   renderNowPlaying(c);
+  updateUI();
   console.log(`[MileMuse] >> #${String(i + 1).padStart(2, "0")} ${c.id} (${c.side}) @ ${currentMiles.toFixed(1)}mi`);
 }
 
