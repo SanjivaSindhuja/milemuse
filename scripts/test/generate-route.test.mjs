@@ -16,6 +16,7 @@ test("buildRouteContent assembles a valid manifest from mocked deps", async () =
     ]),
     generateScript: async (poi, side) => `On your ${side}, ${poi.name}.`,
     synth: () => {}, durationSec: () => 42.0, audioName: () => "audio/deadbeefdeadbeef.mp3",
+    voiceAvailable: () => true,
     outDir,
   };
   const { manifest } = await buildRouteContent({ from: "Everett, WA", to: "Seattle, WA", deps });

@@ -19,13 +19,13 @@ export async function buildRouteContent({ from, to, deps }) {
   const polyline = await d.osrmPolyline(a, b);
   const cum = cumulativeMiles(polyline);
   const total = cum[cum.length - 1];
-  const pois = await d.harvestAlongRoute(polyline, cum, {});
+  const pois = await d.harvestAlongRoute(polyline, cum);
 
-  const voice = voiceAvailable(VOICE) ? VOICE : VOICE_FB;
+  const voice = d.voiceAvailable(VOICE) ? VOICE : VOICE_FB;
   const clips = [];
   for (let i = 0; i < pois.length; i++) {
     const poi = pois[i];
-    const script = await d.generateScript(poi, poi.side, {});
+    const script = await d.generateScript(poi, poi.side);
     const rel = d.audioName(voice, script);
     d.synth(script, voice, join(d.outDir, rel));
     const startAtMiles = i === 0 ? 0 : Math.max(0, poi.atMiles - LEAD);
@@ -67,7 +67,7 @@ async function main() {
       wikiSearch: geoSearch, wikiExtract: fetchExtract, osmSearch: overpassPois,
     }),
     generateScript: (poi, side) => generateScript(poi, side, { client }),
-    synth, durationSec, audioName, outDir,
+    synth, durationSec, audioName, voiceAvailable, outDir,
   };
   console.log(`Generating ${from} -> ${to} ...`);
   const { manifest } = await buildRouteContent({ from, to, deps });
@@ -76,9 +76,10 @@ async function main() {
   // register in routes.json so the player picker shows it
   const rj = join(HERE, "..", "public", "routes.json");
   const idx = existsSync(rj) ? JSON.parse(readFileSync(rj, "utf8")) : [];
-  if (!idx.find((r) => r.id === slug)) {
-    idx.push({ id: slug, label: manifest.route.name, name: manifest.route.name, dir: `routes/${slug}`, totalMiles: manifest.route.totalMiles, stops: manifest.clips.length });
-    writeFileSync(rj, JSON.stringify(idx, null, 2));
-  }
+  const entry = { id: slug, label: manifest.route.name, name: manifest.route.name, dir: `routes/${slug}`, totalMiles: manifest.route.totalMiles, stops: manifest.clips.length };
+  const existing = idx.find((r) => r.id === slug);
+  if (existing) Object.assign(existing, entry);
+  else idx.push(entry);
+  writeFileSync(rj, JSON.stringify(idx, null, 2));
 }
 if (import.meta.url === `file://${process.argv[1].replace(/\\/g, "/")}`) main().catch((e) => { console.error("ERROR:", e.message); process.exit(1); });
