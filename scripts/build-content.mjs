@@ -8,43 +8,23 @@
 // Run:  node scripts/build-content.mjs   (or: npm run build / npm run publish)
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
-import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { bearingDeg, cumulativeMiles, snapToRoute, sideOfRoad } from "../public/geo.js";
+import { osrmPolyline } from "./lib/routing.mjs";
+import { audioName, synth, durationSec, voiceAvailable } from "./lib/tts.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const PUB = join(ROOT, "public");
 const ROUTES_IN = join(ROOT, "content", "routes");
 const FILLERS_IN = join(ROOT, "content", "fillers.json");
-const TMP = join(HERE, "tmp");
 
 const round = (n, d = 2) => Math.round(n * 10 ** d) / 10 ** d;
 const sha = (s) => createHash("sha256").update(s).digest("hex");
-let _voices = null, synthCount = 0, cacheCount = 0;
+let synthCount = 0, cacheCount = 0;
 const allText = []; // for the SW cache-version hash
-
-async function osrmPolyline(from, to) {
-  const url =
-    `https://router.project-osrm.org/route/v1/driving/` +
-    `${from.lng},${from.lat};${to.lng},${to.lat}?overview=full&geometries=geojson`;
-  let lastErr;
-  for (let attempt = 1; attempt <= 4; attempt++) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`OSRM HTTP ${res.status}`);
-      const data = await res.json();
-      if (data.code !== "Ok" || !data.routes?.[0]) throw new Error(`OSRM: ${data.code}`);
-      return data.routes[0].geometry.coordinates.map(([lng, lat]) => ({ lat, lng }));
-    } catch (e) {
-      lastErr = e;
-      if (attempt < 4) await new Promise((r) => setTimeout(r, 1500 * attempt));
-    }
-  }
-  throw lastErr;
-}
 
 function routeKey(r) { return `${r.from.lat},${r.from.lng}->${r.to.lat},${r.to.lng}`; }
 async function getPolyline(id, route) {
@@ -62,28 +42,7 @@ async function getPolyline(id, route) {
   return poly;
 }
 
-function voiceAvailable(voice) {
-  if (_voices === null) {
-    try { _voices = execFileSync("python", ["-m", "edge_tts", "--list-voices"], { encoding: "utf8" }); }
-    catch { _voices = ""; }
-  }
-  return _voices.includes(voice);
-}
-
-function synth(text, voice, outPath) {
-  mkdirSync(TMP, { recursive: true });
-  const txt = join(TMP, "clip.txt");
-  writeFileSync(txt, text, "utf8");
-  execFileSync("python", ["-m", "edge_tts", "--file", txt, "--voice", voice, "--write-media", outPath], { stdio: "pipe" });
-}
-
-function durationSec(mp3) {
-  const out = execFileSync("ffprobe", ["-v", "quiet", "-print_format", "json", "-show_format", mp3], { encoding: "utf8" });
-  return parseFloat(JSON.parse(out).format.duration);
-}
-
 // Content-hash filename -> unchanged scripts keep the same file and are skipped.
-function audioName(voice, text) { return "audio/" + sha(voice + "\n" + text).slice(0, 16) + ".mp3"; }
 function synthIfNeeded(text, voice, outPath) {
   if (existsSync(outPath)) { cacheCount++; return; }
   synth(text, voice, outPath); synthCount++;
@@ -182,7 +141,6 @@ async function main() {
   index.sort((a, b) => (a.id < b.id ? 1 : -1)); // to-work before to-home
   writeFileSync(join(PUB, "routes.json"), JSON.stringify(index, null, 2));
   const swv = bumpServiceWorker();
-  try { rmSync(TMP, { recursive: true, force: true }); } catch {}
 
   console.log(`\nOK: ${index.length} route(s) + ${fillers ? fillers.count : 0} fillers`);
   console.log(`  audio: ${synthCount} synthesized, ${cacheCount} reused from cache`);
