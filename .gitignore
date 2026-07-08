@@ -5,3 +5,4 @@ node_modules/
 scripts/tmp/
 scripts/tmp-*.json
 content/routes/.cache/
+.superpowers/
