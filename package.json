@@ -6,6 +6,10 @@
   "description": "MileMuse - offline GPS travel narration.",
   "scripts": {
     "build": "node scripts/build-content.mjs",
-    "publish": "node scripts/publish.mjs"
+    "publish": "node scripts/publish.mjs",
+    "generate": "node scripts/generate-route.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0"
   }
 }
