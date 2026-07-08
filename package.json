@@ -3,5 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "MileMuse - offline-ish GPS travel narration. Everett->Seattle demo."
+  "description": "MileMuse - offline GPS travel narration.",
+  "scripts": {
+    "build": "node scripts/build-content.mjs",
+    "publish": "node scripts/publish.mjs"
+  }
 }

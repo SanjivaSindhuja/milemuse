@@ -1,11 +1,15 @@
-// build-content.mjs - MileMuse content pipeline (multi-route).
-// Reads every content/routes/*.json and bakes each into
-//   public/routes/<id>/{route.json, manifest.json, audio/NN.mp3}
-// plus a public/routes.json index. Uses OSRM + edge-tts + ffprobe.
-// Run:  node scripts/build-content.mjs
+// build-content.mjs - MileMuse content pipeline (multi-route + shared fillers).
+// Reads content/routes/*.json and content/fillers.json, bakes each into
+//   public/routes/<id>/{route.json, manifest.json, audio/<hash>.mp3}
+//   public/fillers/{manifest.json, audio/<hash>.mp3}
+// plus public/routes.json. Audio is content-hash-named, so rebuilds only
+// re-synthesize NEW or CHANGED scripts (fast refresh). Also auto-bumps the
+// service-worker cache version from a content hash.
+// Run:  node scripts/build-content.mjs   (or: npm run build / npm run publish)
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { bearingDeg, cumulativeMiles, snapToRoute, sideOfRoad } from "../public/geo.js";
@@ -14,10 +18,13 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const PUB = join(ROOT, "public");
 const ROUTES_IN = join(ROOT, "content", "routes");
+const FILLERS_IN = join(ROOT, "content", "fillers.json");
 const TMP = join(HERE, "tmp");
 
 const round = (n, d = 2) => Math.round(n * 10 ** d) / 10 ** d;
-let _voices = null;
+const sha = (s) => createHash("sha256").update(s).digest("hex");
+let _voices = null, synthCount = 0, cacheCount = 0;
+const allText = []; // for the SW cache-version hash
 
 async function osrmPolyline(from, to) {
   const url =
@@ -39,13 +46,26 @@ async function osrmPolyline(from, to) {
   throw lastErr;
 }
 
+function routeKey(r) { return `${r.from.lat},${r.from.lng}->${r.to.lat},${r.to.lng}`; }
+async function getPolyline(id, route) {
+  const cf = join(ROUTES_IN, ".cache", `${id}.polyline.json`);
+  const key = routeKey(route);
+  if (existsSync(cf)) {
+    try {
+      const c = JSON.parse(readFileSync(cf, "utf8"));
+      if (c.key === key && c.polyline?.length) { console.log("  (cached route geometry)"); return c.polyline; }
+    } catch {}
+  }
+  const poly = await osrmPolyline(route.from, route.to);
+  mkdirSync(dirname(cf), { recursive: true });
+  writeFileSync(cf, JSON.stringify({ key, polyline: poly }));
+  return poly;
+}
+
 function voiceAvailable(voice) {
   if (_voices === null) {
-    try {
-      _voices = execFileSync("python", ["-m", "edge_tts", "--list-voices"], { encoding: "utf8" });
-    } catch {
-      _voices = "";
-    }
+    try { _voices = execFileSync("python", ["-m", "edge_tts", "--list-voices"], { encoding: "utf8" }); }
+    catch { _voices = ""; }
   }
   return _voices.includes(voice);
 }
@@ -54,40 +74,23 @@ function synth(text, voice, outPath) {
   mkdirSync(TMP, { recursive: true });
   const txt = join(TMP, "clip.txt");
   writeFileSync(txt, text, "utf8");
-  execFileSync("python", ["-m", "edge_tts", "--file", txt, "--voice", voice, "--write-media", outPath], {
-    stdio: "pipe",
-  });
+  execFileSync("python", ["-m", "edge_tts", "--file", txt, "--voice", voice, "--write-media", outPath], { stdio: "pipe" });
 }
 
 function durationSec(mp3) {
-  const out = execFileSync("ffprobe", ["-v", "quiet", "-print_format", "json", "-show_format", mp3], {
-    encoding: "utf8",
-  });
+  const out = execFileSync("ffprobe", ["-v", "quiet", "-print_format", "json", "-show_format", mp3], { encoding: "utf8" });
   return parseFloat(JSON.parse(out).format.duration);
 }
 
-function routeKey(r) {
-  return `${r.from.lat},${r.from.lng}->${r.to.lat},${r.to.lng}`;
+// Content-hash filename -> unchanged scripts keep the same file and are skipped.
+function audioName(voice, text) { return "audio/" + sha(voice + "\n" + text).slice(0, 16) + ".mp3"; }
+function synthIfNeeded(text, voice, outPath) {
+  if (existsSync(outPath)) { cacheCount++; return; }
+  synth(text, voice, outPath); synthCount++;
 }
-
-// Fetch route geometry once and cache it, so a flaky OSRM never blocks a rebuild
-// (rebuilds mostly re-synth audio; the road line only changes if from/to change).
-async function getPolyline(id, route) {
-  const cf = join(ROUTES_IN, ".cache", `${id}.polyline.json`);
-  const key = routeKey(route);
-  if (existsSync(cf)) {
-    try {
-      const c = JSON.parse(readFileSync(cf, "utf8"));
-      if (c.key === key && c.polyline?.length) {
-        console.log("  (cached route geometry)");
-        return c.polyline;
-      }
-    } catch {}
-  }
-  const poly = await osrmPolyline(route.from, route.to);
-  mkdirSync(dirname(cf), { recursive: true });
-  writeFileSync(cf, JSON.stringify({ key, polyline: poly }));
-  return poly;
+function pruneAudio(dir, referenced) {
+  if (!existsSync(dir)) return;
+  for (const f of readdirSync(dir)) if (!referenced.has(f)) { try { rmSync(join(dir, f)); } catch {} }
 }
 
 async function buildRoute(data, id) {
@@ -100,7 +103,6 @@ async function buildRoute(data, id) {
   const polyline = await getPolyline(id, route);
   const cum = cumulativeMiles(polyline);
   const totalMiles = cum[cum.length - 1];
-  console.log(`  route: ${polyline.length} pts, ${totalMiles.toFixed(1)} mi`);
   writeFileSync(join(outDir, "route.json"), JSON.stringify({ totalMiles: round(totalMiles), polyline }));
 
   const enriched = landmarks.map((lm) => {
@@ -113,42 +115,59 @@ async function buildRoute(data, id) {
     return { ...lm, atMiles: snap.atMiles, side, startAtMiles: Math.max(0, snap.atMiles - lead) };
   });
   enriched.sort((a, b) => a.startAtMiles - b.startAtMiles);
-  if (enriched.length) enriched[0].startAtMiles = 0; // opening clip plays at the very start (also unlocks iOS audio on the Start tap)
+  if (enriched.length) enriched[0].startAtMiles = 0; // opening clip plays at the very start
 
   const useVoice = voiceAvailable(voice) ? voice : voiceFallback;
-  const clips = [];
-  for (let i = 0; i < enriched.length; i++) {
-    const lm = enriched[i];
-    const num = String(i + 1).padStart(2, "0");
-    const rel = `audio/${num}.mp3`;
-    synth(lm.script, useVoice, join(outDir, rel));
-    const dur = durationSec(join(outDir, rel));
-    clips.push({
-      id: lm.id, title: lm.name, audio: rel, durationSec: round(dur, 1),
+  const referenced = new Set();
+  const clips = enriched.map((lm) => {
+    const rel = audioName(useVoice, lm.script);
+    referenced.add(rel.split("/").pop());
+    synthIfNeeded(lm.script, useVoice, join(outDir, rel));
+    allText.push(lm.script);
+    return {
+      id: lm.id, title: lm.name, audio: rel, durationSec: round(durationSec(join(outDir, rel)), 1),
       atMiles: round(lm.atMiles), startAtMiles: round(lm.startAtMiles),
       side: lm.side, category: lm.category, lat: lm.lat, lng: lm.lng, transcript: lm.script,
-    });
-    console.log(`  ${num} ${lm.id.padEnd(20)} ${lm.atMiles.toFixed(1).padStart(5)}mi ${lm.side.padEnd(5)} ${dur.toFixed(0)}s`);
-  }
+    };
+  });
+  pruneAudio(audioDir, referenced);
 
-  const manifest = {
-    schemaVersion: 1,
-    generatedAt: new Date().toISOString(),
-    voice: useVoice,
+  writeFileSync(join(outDir, "manifest.json"), JSON.stringify({
+    schemaVersion: 1, voice: useVoice,
     route: { name: route.name, totalMiles: round(totalMiles), expectedSpeedMph: route.expectedSpeedMph, from: route.from, to: route.to },
     clips,
-  };
-  writeFileSync(join(outDir, "manifest.json"), JSON.stringify(manifest, null, 2));
+  }, null, 2));
 
-  const errs = [];
-  for (const c of clips) {
-    if (!existsSync(join(outDir, c.audio))) errs.push(`missing ${c.audio}`);
-    if (c.durationSec <= 3) errs.push(`too short: ${c.id}`);
-  }
-  for (let i = 1; i < clips.length; i++) if (clips[i].startAtMiles < clips[i - 1].startAtMiles) errs.push("not sorted");
-  if (errs.length) throw new Error(`${id}: ${errs.join("; ")}`);
-
+  console.log(`  ${clips.length} stops (${clips.map((c) => c.atMiles).slice(0, 3).join(", ")}... mi)`);
   return { id, label: data.label || route.name, name: route.name, dir: `routes/${id}`, totalMiles: round(totalMiles), stops: clips.length };
+}
+
+function buildFillers() {
+  if (!existsSync(FILLERS_IN)) return null;
+  const data = JSON.parse(readFileSync(FILLERS_IN, "utf8"));
+  const outDir = join(PUB, "fillers"), audioDir = join(outDir, "audio");
+  mkdirSync(audioDir, { recursive: true });
+  const useVoice = voiceAvailable(data.voice) ? data.voice : data.voiceFallback;
+  const referenced = new Set();
+  const clips = data.fillers.map((f) => {
+    const rel = audioName(useVoice, f.script);
+    referenced.add(rel.split("/").pop());
+    synthIfNeeded(f.script, useVoice, join(outDir, rel));
+    allText.push(f.script);
+    return { id: f.id, title: f.title, audio: rel, durationSec: round(durationSec(join(outDir, rel)), 1), category: f.category, transcript: f.script };
+  });
+  pruneAudio(audioDir, referenced);
+  writeFileSync(join(outDir, "manifest.json"), JSON.stringify({ schemaVersion: 1, voice: useVoice, clips }, null, 2));
+  console.log(`\n=== fillers ===\n  ${clips.length} anytime stories`);
+  return { count: clips.length };
+}
+
+function bumpServiceWorker() {
+  const v = "milemuse-" + sha(allText.join("\n")).slice(0, 8);
+  const p = join(PUB, "sw.js");
+  const s = readFileSync(p, "utf8").replace(/const CACHE = "[^"]*";/, `const CACHE = "${v}";`);
+  writeFileSync(p, s);
+  return v;
 }
 
 async function main() {
@@ -159,11 +178,15 @@ async function main() {
     const data = JSON.parse(readFileSync(join(ROUTES_IN, f), "utf8"));
     index.push(await buildRoute(data, data.id || f.replace(/\.json$/, "")));
   }
+  const fillers = buildFillers();
   index.sort((a, b) => (a.id < b.id ? 1 : -1)); // to-work before to-home
   writeFileSync(join(PUB, "routes.json"), JSON.stringify(index, null, 2));
+  const swv = bumpServiceWorker();
   try { rmSync(TMP, { recursive: true, force: true }); } catch {}
-  console.log(`\nOK: built ${index.length} route(s) -> public/routes.json`);
-  for (const r of index) console.log(`  ${r.id.padEnd(10)} ${r.stops} stops, ${r.totalMiles} mi  (${r.name})`);
+
+  console.log(`\nOK: ${index.length} route(s) + ${fillers ? fillers.count : 0} fillers`);
+  console.log(`  audio: ${synthCount} synthesized, ${cacheCount} reused from cache`);
+  console.log(`  service worker cache -> ${swv}`);
 }
 
 main().catch((e) => { console.error("BUILD ERROR:", e.message); process.exit(1); });

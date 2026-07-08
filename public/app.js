@@ -27,8 +27,10 @@ let current = -1, nextIndex = 0, isPlaying = false, paused = false;
 let currentMiles = 0, currentLL = null, offRoute = false, mode = "idle";
 let playbackRate = 1, wakeLock = null, watchId = null, simRaf = 0;
 let offRoutePaused = false, audioUnlocked = false, firstFix = false;
+let fillers = [], fillerQueue = [], currentIsFiller = false;
 let bbox = null;
 const OFFROUTE_MILES = 0.4; // generous vs ~10-50m GPS error; only a real detour trips it
+const FILLER_BASE = "./fillers";
 // Tiny silent MP3 (data URI) played inside the Start tap to unlock iOS audio,
 // so the first real clip can start later (after the GPS fix) without being blocked.
 const SILENT_MP3 = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYyLjEyLjEwMQAAAAAAAAAAAAAA//sQxAADwAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xLEKYPAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xDEU4PAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7EsR9A8AAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7EMSnA8AAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
@@ -41,6 +43,7 @@ async function loadRoutes() {
   try {
     routes = await fetch("./routes.json").then((r) => { if (!r.ok) throw new Error("routes"); return r.json(); });
     renderPicker();
+    loadFillers();
     const hour = new Date().getHours();
     const preferId = hour < 14 ? "to-work" : "to-home"; // morning -> work, afternoon/evening -> home
     const def = routes.find((r) => r.id === preferId) || routes[0];
@@ -49,6 +52,14 @@ async function loadRoutes() {
     setStatus("Content is still baking - refresh in a moment.");
     console.warn("[MileMuse] routes load failed:", e.message);
   }
+}
+
+async function loadFillers() {
+  try {
+    const m = await fetch(FILLER_BASE + "/manifest.json").then((r) => { if (!r.ok) throw new Error("fillers"); return r.json(); });
+    fillers = m.clips || [];
+    console.log(`[MileMuse] ${fillers.length} fillers ready`);
+  } catch { fillers = []; }
 }
 
 function renderPicker() {
@@ -130,18 +141,51 @@ function projectLL(p) {
 }
 
 // ---------- the engine ----------
+function shuffleFillers() {
+  fillerQueue = fillers.map((_, i) => i);
+  for (let i = fillerQueue.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [fillerQueue[i], fillerQueue[j]] = [fillerQueue[j], fillerQueue[i]];
+  }
+}
+function nextFiller() { if (!fillerQueue.length) shuffleFillers(); return fillers[fillerQueue.shift()]; }
+
+// Play a region "filler" story to keep the drive from going silent between places.
+function playFiller() {
+  const f = nextFiller();
+  if (!f) return false;
+  currentIsFiller = true; isPlaying = true;
+  el.audio.src = FILLER_BASE + "/" + f.audio;
+  el.audio.playbackRate = playbackRate;
+  const pr = el.audio.play();
+  if (pr && pr.catch) pr.catch(() => { isPlaying = false; });
+  el.npCategory.textContent = f.category; el.npCategory.dataset.cat = f.category;
+  el.npSide.className = "side"; // no left/right for region stories
+  el.npSideLabel.textContent = "along the way";
+  el.npTitle.textContent = f.title;
+  el.npTranscript.textContent = f.transcript; el.npTranscript.scrollTop = 0;
+  renderUpcoming();
+  updateUI();
+  console.log(`[MileMuse] ~~ filler ${f.id}`);
+  return true;
+}
+
+// A place story that's due takes priority; otherwise fill the silence with a region story.
+function playNext() {
+  if (nextIndex < clips.length && clips[nextIndex].startAtMiles <= currentMiles + 1e-6) { playClip(nextIndex); return true; }
+  if (fillers.length) return playFiller();
+  return false;
+}
+
 function tick() {
   updateUI();
-  // Off the planned route: hold narration (don't fire a story for a place you're not
-  // near); it auto-resumes at the right spot once you rejoin the route.
+  // Off the planned route: hold narration; it auto-resumes on rejoin (see applyOffRoute).
   if (paused || isPlaying || offRoute) return;
-  if (nextIndex < clips.length && clips[nextIndex].startAtMiles <= currentMiles + 1e-6) {
-    playClip(nextIndex);
-  }
+  playNext();
 }
 
 function playClip(i) {
-  current = i; nextIndex = i + 1; isPlaying = true;
+  current = i; nextIndex = i + 1; isPlaying = true; currentIsFiller = false;
   const c = clips[i];
   el.audio.src = routeBase + "/" + c.audio;
   el.audio.playbackRate = playbackRate;
@@ -297,7 +341,7 @@ el.btnPlayPause.addEventListener("click", () => {
   else { el.audio.pause(); paused = true; cancelSim(); setPlayIcon(false); }
 });
 el.btnReplay.addEventListener("click", () => { if (current >= 0) { el.audio.currentTime = 0; el.audio.play().catch(() => {}); } });
-el.btnSkip.addEventListener("click", () => { if (nextIndex < clips.length) { el.audio.pause(); isPlaying = false; playClip(nextIndex); } });
+el.btnSkip.addEventListener("click", () => { el.audio.pause(); isPlaying = false; if (!playNext() && nextIndex < clips.length) playClip(nextIndex); });
 
 el.audio.addEventListener("ended", () => { isPlaying = false; tick(); });
 el.audio.addEventListener("play", () => setPlayIcon(true));

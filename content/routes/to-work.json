@@ -18,7 +18,7 @@
   },
   "voice": "en-US-AndrewNeural",
   "voiceFallback": "en-US-GuyNeural",
-  "defaultLeadMiles": 0.6,
+  "defaultLeadMiles": 0.15,
   "landmarks": [
     {
       "id": "everett-welcome",
@@ -35,7 +35,7 @@
       "lat": 47.9074,
       "lng": -122.2811,
       "category": "history",
-      "script": "Okay, look off to your right - west, toward Paine Field. See that enormous building? That is the Boeing Everett Factory, and it is, no exaggeration, the largest building in the world by volume - something like 472 million cubic feet. It's so absurdly big that early on, before they sorted out the air circulation, clouds would actually start forming up near the ceiling. Indoor weather. This is where they built the jumbo jets - the 747, the 777, the 787 Dreamliner. Fun brag for the carpool: you just drove past a single roof with more airplanes under it than most countries own."
+      "script": "Okay - look way off in the distance to your right, a few miles west toward Paine Field. See that enormous building out there? That is the Boeing Everett Factory, and it is, no exaggeration, the largest building in the world by volume - something like 472 million cubic feet. It's so absurdly big that early on, before they sorted out the air circulation, clouds would actually start forming up near the ceiling. Indoor weather. This is where they built the jumbo jets - the 747, the 777, the 787 Dreamliner. Fun brag for the carpool: you just drove past a single roof with more airplanes under it than most countries own."
     },
     {
       "id": "lynnwood-link",
@@ -51,7 +51,7 @@
       "lat": 47.8107,
       "lng": -122.382,
       "category": "practical",
-      "script": "Off to your right, a few miles west, is Edmonds - and Edmonds has a ferry. The Edmonds to Kingston run carries you across Puget Sound to the Kitsap Peninsula in about half an hour, and honestly it's less commute and more scenic cruise that happens to move your car. Edmonds itself is one of those tidy, artsy little waterfront towns with a flower-basket-on-every-lamppost kind of energy. File it under weekend, not today."
+      "script": "Way off in the distance to your right - a good three miles west - is Edmonds, and Edmonds has a ferry. The Edmonds to Kingston run carries you across Puget Sound to the Kitsap Peninsula in about half an hour, and honestly it's less commute and more scenic cruise that happens to move your car. Edmonds itself is one of those tidy, artsy little waterfront towns with a flower-basket-on-every-lamppost kind of energy. File it under weekend, not today."
     },
     {
       "id": "king-county-line",
@@ -99,7 +99,7 @@
       "lat": 47.628,
       "lng": -122.3405,
       "category": "history",
-      "leadMiles": 1.5,
+      "leadMiles": 0.5,
       "script": "There she is - the Space Needle, off to your right. Built for the 1962 World's Fair, 605 feet tall, and for a brief shining moment the tallest thing west of the Mississippi. The whole theme of that fair was the future, which is exactly why the Needle looks like a flying saucer that parked itself on a tripod. And beyond it, that whole skyline stacking up into the sky - that's downtown Seattle. You are officially arriving in the big city."
     },
     {
@@ -108,7 +108,7 @@
       "lat": 47.6235,
       "lng": -122.334,
       "category": "practical",
-      "leadMiles": 0.5,
+      "leadMiles": 0.3,
       "script": "Okay - this one's for you. Your exit is coming right up: Mercer Street. Take it, and get ready to hang a left at the signal. Welcome to South Lake Union - Amazon's backyard, a neighborhood that went from sleepy warehouses and biotech labs to the densest tech district in the whole city in about a decade flat. The Space Needle is still waving at you over to the west. Terry Avenue North is just ahead - number 410, and you're here. That's the tour, Everett to South Lake Union. Go get 'em - and hey, same time on the way home?"
     },
     {

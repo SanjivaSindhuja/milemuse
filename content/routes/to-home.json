@@ -10,7 +10,7 @@
   },
   "voice": "en-US-AndrewNeural",
   "voiceFallback": "en-US-GuyNeural",
-  "defaultLeadMiles": 0.6,
+  "defaultLeadMiles": 0.15,
   "landmarks": [
     {
       "id": "slu-depart",
@@ -91,7 +91,7 @@
       "lat": 47.8107,
       "lng": -122.3820,
       "category": "practical",
-      "script": "Off to your left, a few miles west, is Edmonds and its ferry dock - the Edmonds to Kingston run straight across Puget Sound. If home can wait, that boat is basically a floating happy hour with a killer view. But let's assume you want your own couch tonight - onward we go."
+      "script": "Way off in the distance to your left - a good three miles west - is Edmonds and its ferry dock - the Edmonds to Kingston run straight across Puget Sound. If home can wait, that boat is basically a floating happy hour with a killer view. But let's assume you want your own couch tonight - onward we go."
     },
     {
       "id": "lynnwood-north",
@@ -115,7 +115,7 @@
       "lat": 47.9074,
       "lng": -122.2811,
       "category": "history",
-      "script": "And there it is again, off to your left to the west - the Boeing Everett Factory, the single largest building on the entire planet by volume. It's so big that clouds once formed up near the ceiling before they fixed the airflow. Every 747, 777, and 787 rolled out of that one building. Your hometown builds the biggest airplanes in the world - not a bad thing to be coming home to."
+      "script": "And there it is again, way off in the distance to your left - a few miles west - the Boeing Everett Factory, the single largest building on the entire planet by volume. It's so big that clouds once formed up near the ceiling before they fixed the airflow. Every 747, 777, and 787 rolled out of that one building. Your hometown builds the biggest airplanes in the world - not a bad thing to be coming home to."
     },
     {
       "id": "snohomish-river-north",

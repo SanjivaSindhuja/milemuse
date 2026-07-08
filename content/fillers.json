@@ -1,0 +1,163 @@
+{
+  "id": "fillers",
+  "voice": "en-US-AndrewNeural",
+  "voiceFallback": "en-US-GuyNeural",
+  "fillers": [
+    {
+      "id": "coffee",
+      "title": "Coffee Country",
+      "category": "quirky",
+      "script": "Since we've got a minute - let's talk coffee, because you are deep in the world capital of it. The very first Starbucks opened down at Pike Place Market in 1971, and the region never looked back. Seattle has one of the highest numbers of coffee shops per person anywhere on Earth. The unspoken rule up here: drip coffee is fuel, espresso is a personality, and asking for it 'extra hot' is a completely normal thing to do. No judgment if you're on your second cup right now."
+    },
+    {
+      "id": "rain-myth",
+      "title": "The Rain Myth",
+      "category": "quirky",
+      "script": "Here's a myth worth busting: Seattle isn't actually that rainy, at least not by the inch. Cities like New York, Boston, and Atlanta all get more total rainfall per year. What Seattle has is gray - a lot of cloudy, drizzly, mist-that-can't-commit days spread across the calendar. Which is exactly why locals famously refuse to use umbrellas. Carrying one basically announces to everyone that you just moved here. A good hood and a bad attitude about it - that's the native approach."
+    },
+    {
+      "id": "grunge",
+      "title": "The Sound of Seattle",
+      "category": "history",
+      "script": "In the early 1990s, this soggy corner of the map accidentally changed music forever. Nirvana, Pearl Jam, Soundgarden, Alice in Chains - all of it came boiling up out of Seattle basements and dive bars into a thing the world called grunge. Flannel shirts, ripped jeans, and a general refusal to look like you were trying. Kurt Cobain, Chris Cornell, Eddie Vedder - for a few years there, the biggest bands on the planet were all from right around here, mostly complaining about the weather you're driving through."
+    },
+    {
+      "id": "rainier",
+      "title": "The Mountain",
+      "category": "nature",
+      "script": "On a clear day, look south and you'll see it: Mount Rainier, floating on the horizon like it's Photoshopped in. Locals don't say 'nice weather' - they say 'the Mountain is out,' because that's the real event. It's 14,411 feet tall, it's an active volcano, and it carries more glaciers than any other peak in the lower 48. It's also the thing everyone underestimates - more climbers have gotten into serious trouble on Rainier than almost any mountain in America. Gorgeous, and completely not messing around."
+    },
+    {
+      "id": "st-helens",
+      "title": "The Day the Mountain Blew",
+      "category": "history",
+      "script": "Not all the volcanoes around here are so well-behaved. On May 18th, 1980, Mount St. Helens - a couple hours south of you - straight up detonated. It blew 1,300 feet clean off its own summit, flattened 230 square miles of forest, and dropped ash on cities hundreds of miles away. It's the deadliest and most destructive volcanic eruption in U.S. history. The mountain's quietly rebuilding a new lava dome in the crater as we speak. The Pacific Northwest: beautiful, and geologically a little unhinged."
+    },
+    {
+      "id": "ferries",
+      "title": "Ferry Country",
+      "category": "nature",
+      "script": "All that water you keep glimpsing to the west is Puget Sound, and it's crisscrossed by the largest ferry system in the entire United States. Washington's ferries carry more than twenty million people a year - big green-and-white boats hauling cars, commuters, and cyclists across the Sound like it's no big deal. For a lot of people out here, the ferry isn't a tourist thing, it's just the commute. Imagine your daily drive to work involving a boat ride with an eagle overhead. That's a Tuesday around here."
+    },
+    {
+      "id": "amazon",
+      "title": "The Everything Store",
+      "category": "history",
+      "script": "You're driving through the town that Amazon ate. It started in 1994 as a scrappy little online bookstore run out of a garage over in Bellevue - Jeff Bezos reportedly took meetings at a Barnes and Noble cafe. Thirty years later it's one of the most valuable companies on the planet, and its towers, its little urban rainforest domes, and about fifty thousand employees are packed into South Lake Union. Fun side effect: it helped turn sleepy Seattle into a full-blown, traffic-clogged tech metropolis. You're welcome, and also, sorry."
+    },
+    {
+      "id": "microsoft",
+      "title": "The Redmond Empire",
+      "category": "history",
+      "script": "Over on the far side of Lake Washington sits Redmond, and Redmond means Microsoft. Two local kids named Bill Gates and Paul Allen actually started the company down in Albuquerque in 1975, then moved it home to the Seattle area a few years later - because of course they did. For decades, Microsoft was the reason a huge chunk of this region even has money. Windows, Xbox, and a sprawling campus so big it has its own bus system. Half the Eastside was basically built on software."
+    },
+    {
+      "id": "boeing",
+      "title": "Jet City",
+      "category": "history",
+      "script": "Long before software, this was an airplane town - people still call Seattle 'Jet City.' A guy named William Boeing built his first airplane on the shores of Lake Union back in 1916, and the company grew into the giant that helped the whole world learn to fly. For generations, if you grew up around here, odds were somebody in your family built airplanes. The booms and busts of Boeing basically set the mood of the entire region - there's even an old billboard legend about 'the last person leaving Seattle' turning out the lights."
+    },
+    {
+      "id": "orcas",
+      "title": "The Locals in the Water",
+      "category": "nature",
+      "script": "Out in Puget Sound live some genuine celebrities: the Southern Resident orcas. These aren't just any killer whales - they're a specific, tight-knit community of family pods, known individually by name and number, who've lived in these waters for generations. Here's the tender part: they almost exclusively eat Chinook salmon, and as the salmon have struggled, so have they. There are only around seventy-some of them left. A whole culture of whales, right off the coast you keep seeing, quietly hanging on."
+    },
+    {
+      "id": "salmon",
+      "title": "It's All About Salmon",
+      "category": "nature",
+      "script": "If the Pacific Northwest had an official animal, it would be the salmon. These fish are born in the rivers, swim out to the ocean for years, and then fight their way back upstream to the exact spot they were born - to spawn, and then die. It's one of the great migrations on Earth, and it's the thread that ties everything here together: the orcas eat them, the bears eat them, the eagles eat them, the forests are literally fertilized by them, and Native cultures have honored them for thousands of years. Whole ecosystem, one very determined fish."
+    },
+    {
+      "id": "underground",
+      "title": "The City Under the City",
+      "category": "quirky",
+      "script": "Here's a weird one. In 1889, the Great Seattle Fire burned the whole downtown to the ground. When they rebuilt, they decided to raise the street level a full story or two to fix the city's, let's say, drainage problems. So they built the new streets right on top of the old ones - which means there's an entire abandoned ground floor of 1890s Seattle still down there under Pioneer Square. You can take a tour through it. A hidden city, one level below the one everybody walks around on."
+    },
+    {
+      "id": "dbcooper",
+      "title": "The Legend of D.B. Cooper",
+      "category": "quirky",
+      "script": "Time for the region's greatest unsolved mystery. In 1971, a calm, polite man in a suit - known to history as D.B. Cooper - hijacked a Boeing 727 out of the Northwest, extorted two hundred thousand dollars, and then, somewhere over the dark forests of southwest Washington, opened the rear stairs and parachuted out into the night. He was never found. Not him, not the parachute, not most of the money. It's the only unsolved skyjacking in American history, and out here he's less a criminal and more a folk hero."
+    },
+    {
+      "id": "hendrix",
+      "title": "Seattle's Guitar Hero",
+      "category": "history",
+      "script": "Long before grunge, this city produced maybe the greatest electric guitarist who ever lived: Jimi Hendrix was born right here in Seattle in 1942. He conquered the world, redefined what a guitar could even do, and then was gone tragically young at 27. He's buried just south of the city in Renton, at a memorial that fans still visit from all over the planet. So somewhere in the DNA of this rainy, moody place is the person who played the wildest 'Star-Spangled Banner' in history."
+    },
+    {
+      "id": "fremont",
+      "title": "The Center of the Universe",
+      "category": "quirky",
+      "script": "Just west of the freeway is a neighborhood called Fremont, which has officially, and completely unofficially, declared itself 'the Center of the Universe.' There's a sign and everything. Fremont is where you'll find a giant concrete troll clutching an actual Volkswagen Beetle under a bridge, a statue of Lenin they bought secondhand from a guy in Slovakia, and a summer parade famous for its enthusiastic naked bicyclists. It is the exact kind of proudly-strange neighborhood that tells you everything about Seattle's sense of humor."
+    },
+    {
+      "id": "gumwall",
+      "title": "The Gum Wall",
+      "category": "quirky",
+      "script": "Down near Pike Place Market, in a little alley called Post Alley, there is a wall - a long brick wall - absolutely covered, floor to way over your head, in used chewing gum. Thousands upon thousands of pieces, in every color, left by tourists for decades. It is deeply, cheerfully gross, and it's one of the most photographed spots in the city. They actually steam-cleaned the whole thing once, hauled off tons of gum, and within days people had lovingly started over. Humanity, ladies and gentlemen."
+    },
+    {
+      "id": "market",
+      "title": "Pike Place Market",
+      "category": "history",
+      "script": "Speaking of Pike Place - that market down on the waterfront has been running since 1907, making it one of the oldest continuously operating public markets in the country. It's where you'll find the famous fishmongers hurling whole salmon through the air to each other, the original Starbucks, mountains of flowers and produce, and that iconic red neon sign. It very nearly got bulldozed for parking lots in the 1960s until the city rallied to save it. Now it's the beating heart of the place - proof that sometimes the locals win."
+    },
+    {
+      "id": "cascadia",
+      "title": "The Big One",
+      "category": "history",
+      "script": "Okay, slightly ominous fun fact, but you should know it. Off the coast runs the Cascadia Subduction Zone, a giant fault line that is quietly capable of producing a magnitude nine earthquake - one of the biggest kinds on the planet. The last time it fully let go was January of 1700, and Japan recorded the tsunami. Scientists say another 'big one' is a matter of when, not if. Don't panic - just know that all this dramatic Pacific Northwest scenery is dramatic for a reason. The ground here has opinions."
+    },
+    {
+      "id": "evergreen",
+      "title": "The Evergreen State",
+      "category": "nature",
+      "script": "Ever notice how it's green here even in the dead of winter? That's not an accident - Washington's nickname is literally 'the Evergreen State.' All those towering, dark-green trees crowding the freeway are mostly Douglas firs, western hemlocks, and red cedars, some of which can live for many hundreds of years and grow over two hundred feet tall. It's a temperate rainforest, technically. All that gray drizzle you complain about? That's the price of admission for one of the greenest, mossiest, most alive landscapes in the entire country."
+    },
+    {
+      "id": "apples",
+      "title": "Apple Empire",
+      "category": "quirky",
+      "script": "Here's a stat that surprises people: Washington grows somewhere around two-thirds of all the apples eaten in the United States. Not a big chunk - most of them. Head a couple hours east, over the mountains, and you'll hit endless orchards in a totally different, sun-baked landscape. So while the west side of the state is famous for rain, coffee, and software, the east side is quietly out there being the apple capital of America. Same state, two completely different planets, one mountain range in between."
+    },
+    {
+      "id": "twinpeaks",
+      "title": "A Damn Fine Cup of Coffee",
+      "category": "quirky",
+      "script": "Fans of a certain very weird TV show, this one's for you. David Lynch shot 'Twin Peaks' right around here, in the misty little towns near Snoqualmie. That waterfall in the opening credits is Snoqualmie Falls, the Great Northern Hotel is the real Salish Lodge perched right beside it, and the Double R Diner is a genuine cafe in North Bend where you can still order the cherry pie and the 'damn fine cup of coffee.' The moody evergreen creepiness of the show? That wasn't set design. That's just what it looks like out here."
+    },
+    {
+      "id": "monorail",
+      "title": "The Future, Circa 1962",
+      "category": "history",
+      "script": "You know the Space Needle came from the 1962 World's Fair, but so did something else you can still ride: the Seattle Monorail. It was built as a glimpse of 'the transportation of the future' - a sleek train gliding a mile from downtown to the fairgrounds. The funny part? Sixty years later, that one-mile stretch is still basically all it does. The city has argued about expanding it for decades. It remains the world's most charming, and least useful, public transit line. Very Seattle: bold vision, complicated follow-through."
+    },
+    {
+      "id": "tulips",
+      "title": "The Tulip Valley",
+      "category": "nature",
+      "script": "If you're doing this drive in April, you're near one of the prettiest surprises in the region. Just north of Everett, up in the flat farmland of the Skagit Valley, entire fields explode into stripes of red, yellow, and purple tulips - millions of them - for the Skagit Valley Tulip Festival. People drive from all over just to stand in a field and be dazzled. It rivals Holland, honestly. A whole valley of flowers, an hour from the skyscrapers. The Pacific Northwest loves a good plot twist."
+    },
+    {
+      "id": "brucelee",
+      "title": "Enter the Cemetery",
+      "category": "history",
+      "script": "Up on Capitol Hill, in Lake View Cemetery, are two of the most-visited graves in the city - and they belong to Bruce Lee and his son Brandon Lee, resting side by side. Bruce Lee lived in Seattle as a young man, taught martial arts here, and even though his fame exploded in Hong Kong and Hollywood, this is where he was laid to rest. Fans leave flowers, notes, and the occasional pair of nunchucks from all over the world. A quiet hilltop with a genuinely legendary view."
+    },
+    {
+      "id": "sasquatch",
+      "title": "Bigfoot Country",
+      "category": "quirky",
+      "script": "Look, we can't drive through these endless dark forests and not mention him. This is Sasquatch country - Bigfoot's home turf. Washington State reports more Bigfoot sightings than just about anywhere in the country, and the creature is woven into local Native legends going back centuries. Is he real? Officially, no. Unofficially, there are gift shops, festivals, and at least one very sincere research organization that would like a word. Either way, staring into these misty, mossy woods, you have to admit - it's the exact kind of place where something could be hiding."
+    },
+    {
+      "id": "seattle-freeze",
+      "title": "The Seattle Freeze",
+      "category": "quirky",
+      "script": "Here's a social phenomenon locals will admit to, reluctantly: the Seattle Freeze. The theory goes that people here are perfectly polite, perfectly nice - and almost impossible to actually become friends with. Everyone's friendly, nobody follows up. Plans get made, then quietly evaporate. Newcomers swear it's real; locals insist they're just, you know, cozy at home with a book and the rain. Whether it's true or not, it's such a well-known idea that there are meetup groups specifically built to beat it. Something to ponder as you drive past a few million polite strangers."
+    }
+  ]
+}
