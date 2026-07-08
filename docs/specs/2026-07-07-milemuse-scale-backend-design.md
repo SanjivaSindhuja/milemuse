@@ -64,8 +64,9 @@ content.
    - **Rotation (free, instant):** each POI holds a pool of N angles; the manifest picks a
      **different one per day** (seed = `hash(poi_id + date + user)`), so a daily commuter's identical
      drive feels new every morning.
-   - **Growth (scheduled):** a nightly job identifies **hot corridors** (routes requested repeatedly)
-     and enqueues **new angles** for their POIs, so popular commutes keep gaining genuinely new
+   - **Growth (scheduled, hybrid):** a nightly job enqueues **new angles** for (a) hot corridors and
+     (b) users' **saved/favorited commutes**, which get a **guaranteed weekly-new** story per place.
+     Everyone gets daily rotation for free; your repeated commute additionally keeps gaining brand-new
      content over time.
 
 Plus the **region filler pool** (the demo's fillers) generalizes to **state/region-level fillers**
@@ -104,17 +105,23 @@ static files to `POST /route`.
 
 ---
 
-## 5. Recommended stack (for review — see Open Questions)
+## 5. Stack (decided — "lean, cost-tight, cloud-flexible")
+
+Chosen to start **lean** and stay **cheap-by-default** (fits free/ad-supported): one small
+always-on service, cheap managed data, and a CDN with near-zero egress.
 
 | Concern | Choice | Note |
 |---|---|---|
-| Compute | **AWS serverless** (Lambda + SQS + EventBridge) | you already run AWS (DotMd); serverless = pay-per-use |
-| POI + spatial | **PostGIS** (RDS/Aurora) | spatial "POIs along a polyline" query |
-| Audio store + CDN | **S3 + CloudFront** | cache-friendly, cheap egress at scale |
-| Routing | **OSRM** on a small always-on box/ECS | free, no per-call fee |
-| LLM | **Claude** (Haiku for scale, Sonnet for premium) | grounded generation |
-| TTS | **Amazon Polly Neural** or **Azure Neural** | licensed for production (edge-tts is unofficial — demo only) |
-| App | the existing **Expo/PWA offline player** | swap static files → `/route` API + local cache |
+| API + worker + routing | **One small always-on container** (Fly.io / Render / a single VPS or ECS task) running the `/route` API, a generation worker, and **OSRM** | lean: no serverless sprawl to start; split out later |
+| Queue | Postgres-backed or a small Redis | avoid managed-queue overhead at first |
+| POI + spatial + metadata | **Managed Postgres + PostGIS** (Neon / Supabase / small RDS) | one DB: POIs, stories, stats |
+| Audio store + CDN | **Cloudflare R2 + CDN** | **zero egress fees** — ideal for free/ad-supported audio delivery |
+| TTS | **Amazon Polly Neural** | licensed, ~$16/1M chars, synth-once-cache-forever |
+| LLM | **Claude Haiku** (grounded) | cheap per story; a premium tier can use Sonnet |
+| App | existing **offline player** | swap static files → `/route` API + local cache |
+
+Cloud-flexible on purpose: R2 + managed Postgres + one container run anywhere, so "lean now, scale
+later" doesn't lock into a provider.
 
 ---
 
@@ -135,15 +142,18 @@ model.
 
 ---
 
-## 7. Open questions / decisions for you
+## 7. Decisions (settled 2026-07-07)
 
-1. **Cloud:** AWS (matches your existing infra) vs GCP (you have tooling) vs stay static+serverless.
-2. **TTS vendor** at production scale (Polly vs Azure vs ElevenLabs) — quality vs cost trade-off.
-3. **Voice/persona** consistency — one signature "witty local" voice nationwide, or regional voices?
-4. **Business shape** — free/ad-supported, subscription, or personal-only — changes cost tolerance.
-5. **Freshness cadence** — truly daily-new, or "new when the pool grows"? Affects generation spend.
-6. **Cold-route latency** — generate synchronously on first request (slower first drive) vs pre-warm
-   popular corridors nightly and skip-cold-this-pass.
+1. **Cloud: start lean** — one small always-on service + managed Postgres/PostGIS + Cloudflare R2/CDN;
+   defer full serverless/autoscale until proven.
+2. **TTS: Amazon Polly Neural** — licensed, cheap at scale, synth-once-cache-forever.
+3. **Business: free / ad-supported** → cost-tight from day one: aggressive caching, demand-driven
+   generation, R2 zero-egress delivery. An ads/monetization layer is deferred but the design leaves room.
+4. **Freshness: hybrid** — everyone gets **daily rotation** of each place's existing angle pool (free);
+   **saved/favorited commutes** additionally get **guaranteed weekly-new** angles via a scheduled job.
+
+Still open (later): voice/persona (one national voice vs regional), ad placement/format, and
+cold-route latency policy (sync-generate on first request vs pre-warm popular corridors).
 
 ---
 
