@@ -139,6 +139,13 @@ the park's `overview` for that topic. So every category is covered in every park
 
 ## The 30-day priming job
 
+> **Amended 2026-11-11 (owner, at go-live):** the daily schedule is deployed **DISABLED**. A published park's refresh
+> writes with Bedrock, so refreshes are started by hand, never automatically. A refresh rewrites only the items whose
+> `factsHash` changed. Phones sync by diff and download only the new hashes. Audio is content-addressed and immutable
+> (cached for a year), and manifests are cached for 300 s. Fresh content between refreshes comes from the online
+> narration service. The first build of all 62 parks went live 2026-11-11 with about 26.5k stories written in a
+> Claude Code session.
+
 - **Schedule**: EventBridge Scheduler runs **daily**; it picks parks whose `lastPrimedAt` is older than 30 days (and
   any marked `force`), so the 63 parks spread out (~2/day) instead of one monthly spike.
 - **Workflow** (Step Functions standard, one execution per park):
