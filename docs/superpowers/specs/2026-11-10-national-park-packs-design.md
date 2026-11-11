@@ -145,6 +145,24 @@ the park's `overview` for that topic. So every category is covered in every park
 > (cached for a year), and manifests are cached for 300 s. Fresh content between refreshes comes from the online
 > narration service. The first build of all 62 parks went live 2026-11-11 with about 26.5k stories written in a
 > Claude Code session.
+>
+> **Offline hardening, 2026-11-11.**
+> - **Manifest v2.** Adds a geo file with road lines, `from`/`to` points for each story stretch, and per-tier
+>   texts files. Full texts sit behind the signed cookie and download only on Wi-Fi.
+> - **Matching.** Stories are matched to the road, not the nearest point: the phone snaps to a road within 60 m, uses
+>   the heading and stretch containment, handles loop roads, and never picks a stretch behind the car.
+> - **Pack-first.** Pack stops play first. A story counts as heard once half of it has played. Pack stories join the
+>   live context through their transcript and gist.
+> - **Language.** Listeners in another language get live stories online and the English pack offline.
+> - **Network.** expo-network, plus network-level failures, decide when the phone is offline; a slow server never
+>   counts. Live stories come back at a story boundary, never cutting the one playing.
+> - **No GPS fix.** A story still plays without a fix, and the app explains GPS or location-off states.
+> - **Offline park map.** Drawn from the pack geo. Map tiles are never bulk-downloaded.
+> - **Car.** Android Auto and CarPlay show offline and GPS states, fall back on taps, and get a Parks folder.
+> - **Quality.** A text lint, plus audio and pronunciation QA scripts.
+>
+> As a check that only changed stories are regenerated, 23 banned-phrase stories were re-voiced. In Yellowstone that
+> changed 12 of 2,533 audio files.
 
 - **Schedule**: EventBridge Scheduler runs **daily**; it picks parks whose `lastPrimedAt` is older than 30 days (and
   any marked `force`), so the 63 parks spread out (~2/day) instead of one monthly spike.
