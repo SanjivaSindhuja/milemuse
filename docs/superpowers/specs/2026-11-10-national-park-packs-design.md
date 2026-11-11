@@ -214,6 +214,15 @@ the park's `overview` for that topic. So every category is covered in every park
 - **NPS API key**: stored by the owner as SSM SecureString `/milemuse/nps-api-key` (KMS `alias/aws/ssm`); the park
   job's Lambda gets `ssm:GetParameter` with decryption on that one parameter and reads it at run time.
 
+## Free samples (owner request)
+
+- Every park has **3 free samples**: the best Full items on three different topics (most facts, longest road first),
+  picked at Publish and marked `sample: true` in the manifest.
+- Their audio is also written to the public path `parks/<code>/s/<hash>.mp3`, so anyone can stream them (no download,
+  no entitlement, not charged, not marked heard).
+- Shown on the park page and on the Full purchase sheet ("Hear what's inside"), with each sample's road and topic.
+- Samples never count toward a free claim and never unlock anything.
+
 ## Left to the builder
 
 Exact stretch length (0.8–1.5 km), the topic-material threshold, Essentials road selection heuristics, batch sizes,

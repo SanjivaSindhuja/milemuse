@@ -29,6 +29,7 @@ CloudFront key group, custom resource), Expo/RN TypeScript (MileMuseApp); tests 
 - Access: Essentials public (`e/`); Full (`f/`) needs a CloudFront signed cookie (7 days) from `POST /v1/parks/<code>/access`; first Full park free per account; Plus = all; unlock product deferred.
 - Losing Full access: next sync off a drive reverts to Essentials (delete `f/` files).
 - Sizing gates (pilot): build cost ≤ $25/park avg, Essentials ≤ 25 MB, Full median ≤ 150 MB.
+- Free samples: 3 per park (best Full items, three different topics), `sample: true` in the manifest, audio also at public `parks/<code>/s/<hash>.mp3`; streamed free on the park page and purchase sheet, never charged or marked heard. Owners: P4 (pick + write `s/`), P6 (`GET /v1/parks/:code` returns `samples: [{ title, road, topic, durationS, url }]`), I1 (`parks/*/s/*` public), A1 (sample buttons on the page and sheet).
 - Commits end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 
 ## Review Focus
