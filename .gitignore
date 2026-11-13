@@ -6,3 +6,5 @@ scripts/tmp/
 scripts/tmp-*.json
 content/routes/.cache/
 .superpowers/
+
+.env.local
