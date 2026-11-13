@@ -185,16 +185,30 @@ Functions (existing ParkPrime), Polly.
 2. A planned Seattle → Spokane trip shows the route card with I-90 WA.
 3. iPhone build and install.
 
-## Status (2026-11-13): pilot stopped at I-405
+## Status (2026-11-13): four segments live, no more Polly
 
-- **Owner's call:** stop after the pilot, because Polly bills a lot. November so far: $461. Of that, $432 was the 62-park
-  build on Nov 11: 14.4M characters on the Generative engine, at $30 per million. I-405 cost $1.48 (49k characters).
-- **Live:** service PR 96 deployed. `i405-wa` published as v0645bfda4314: 80 stories (written by a Sonnet agent, all
-  passing `park-drafts.mjs check`), Essentials 3.8 MB, Full 12.1 MB. App PR 97 merged: the library, Explore's
-  "Offline packs" row, the route card and the commute card.
-- **Primed, not written or voiced:** `i15-nv`, `i15-ut-n` and `i15-ut-s` (roads and facts stored; publish waits).
-- **Priming failed:** the other 11. Wikipedia answered 429 because 14 segments ran their corridor searches at once.
-  Searches are cached for 30 days, so a rerun one segment at a time picks up where it stopped.
-- **Before any more voicing:** decide the engine. Neural is $16 per million characters against Generative's $30. At
-  I-405's ~1,000 characters per km, the remaining ~5,000 km is roughly 5M characters: about $150 Generative or $80
-  Neural. Emulator e2e (Task 6) and the iPhone build are not done.
+- **Owner's call:** stop the pilot at what was ready, with no more Polly ("polly is billing a lot"). November so far
+  is $461. $432 of that was the 62-park build on Nov 11: 14.4M characters on the Generative engine, at $30 per million.
+- **Live on the app** (`GET /v1/highways` lists only published segments):
+
+  | Segment | Version | Essentials / Full | Voice |
+  |---|---|---|---|
+  | `i405-wa` | v0645bfda4314 | 3.8 / 12.1 MB, 80 stories | Polly Matthew, Generative ($1.48) |
+  | `i15-nv` | v4efd28d25904 | 6.6 / 18.2 MB, 111 stories | Kokoro `am_michael`, local, $0 |
+  | `i15-ut-n` | v1c9b8f9e2e61 | 8.0 / 19.3 MB, 144 stories | Kokoro `am_michael`, local, $0 |
+  | `i15-ut-s` | v7397aff244ec | 5.4 / 11.0 MB, 74 stories | Kokoro `am_michael`, local, $0 |
+
+- **Writing:** one Sonnet writer agent per segment. Every draft passed `park-drafts.mjs check`. One draft was fixed by
+  hand because it named a business.
+- **Local voicing:** Kokoro-82M ONNX (Apache-2.0) on the owner's PC.
+  - Its phonemizer misreads digits, so years, decades, grouped numbers, decimals and 3-digit interstates are spelled
+    out for the voice only. The stored text keeps its digits.
+  - Each item is stored as park.write would store it: mono 22.05 kHz 32 kbps at -20 LUFS, S3
+    `parks/<code>/<tier>/<sha256>.mp3`, and the item row. Then the pipeline Lambda runs `park.publish` and
+    `park.collect`.
+  - The first priming run had voiced the 12 lead-ins of each I-15 segment with Polly. They were re-voiced locally, so
+    each pack has one voice.
+  - Never load drafts into `next.text` and then start ParkPrime: its write step voices them with Polly.
+- **Not built:** the other 11 pilot segments. Their priming failed on Wikipedia 429s when 14 ran at once. Rerun them
+  one segment at a time.
+- **Not done:** emulator e2e (Task 6) and the iPhone build.
